@@ -1,0 +1,38 @@
+# black background, line colors to amber
+
+lines.color: d8b200
+patch.edgecolor: d8b200
+
+text.color: d8b200
+
+axes.facecolor: black
+axes.edgecolor: d8b200
+axes.labelcolor: d8b200
+axes.prop_cycle: cycler('color', ['00ff00', '00ffff', 'ff00ff', 'ffd200'])
+
+axes.grid: True
+grid.linestyle: dotted
+xtick.minor.visible: True
+ytick.minor.visible: True
+axes.grid.axis: both
+
+xtick.color: d8b200
+ytick.color: d8b200
+
+grid.color: d8b200
+
+figure.facecolor: 282828
+figure.edgecolor: black
+
+savefig.facecolor: black
+savefig.edgecolor: black
+
+legend.edgecolor: d8b200
+legend.facecolor: 282828
+
+### Boxplots
+boxplot.boxprops.color: white
+boxplot.capprops.color: white
+boxplot.flierprops.color: white
+boxplot.flierprops.markeredgecolor: white
+boxplot.whiskerprops.color: white
