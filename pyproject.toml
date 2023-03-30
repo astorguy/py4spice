@@ -3,10 +3,10 @@ requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "ngspicehlp"
+name = "py4spice"
 version = "0.0.1"
 authors = [{ name = "Mark Chadwick", email = "mark.chadwick@techsharpen.com" }]
-description = "Ngspice Helper"
+description = "Python for Spice"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT License" }
@@ -15,11 +15,11 @@ classifiers = ["Programming Language :: Python :: 3"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["ngspicehlp"]
+include = ["py4spice"]
 
 # recommended setting from pytest docs
 [tool.pytest.ini_options]
 addopts = ["--import-mode=importlib"]
 
 [project.urls]
-repository = "https://github.com/astorguy/ngspicehlp_project"
+repository = "https://github.com/astorguy/py4spice"
