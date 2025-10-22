@@ -1,0 +1,5 @@
+alias r='uv run uvicorn src.main:app --reload &'
+alias ws='cd $APP_HOME; ls -la;'
+
+alias ll='ls -la'
+alias hi='history'
