@@ -1,0 +1,45 @@
+{
+  "name": "trixe_python3_14_ngspice",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  // this is needed for uv to copy files instead of using hardlinks (avoid warning meessage)
+  "remoteEnv": {
+    "UV_LINK_MODE": "copy"
+  },
+  "postCreateCommand": "/workspaces/$(basename $PWD)/.devcontainer/postCreateSetup.sh",
+  "remoteUser": "vscode",
+  "customizations": {
+    "codespaces": {
+      "openFiles": [
+        "./.devcontainer/devcontainer.json"
+      ]
+    },
+    "vscode": {
+      "extensions": [
+        "github.copilot",
+        "ms-python.python",
+        "charliermarsh.ruff",
+        "ms-python.vscode-pylance",
+        "wesbos.theme-cobalt2",
+        "tamasfe.even-better-toml",
+        "ryanolsonx.solarized",
+        "xuanli.spice"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "editor.formatOnSave": true,
+        "python.analysis.typeCheckingMode": "strict",
+        "workbench.colorTheme": "Cobalt2",
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.formatOnSave": true,
+          "editor.codeActionsOnSave": {
+            "source.fixAll": "explicit",
+            "source.organizeImports": "explicit"
+          }
+        }
+      }
+    }
+  }
+}
