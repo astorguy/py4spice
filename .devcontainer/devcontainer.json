@@ -1,5 +1,5 @@
 {
-  "name": "trixe_python3_14_ngspice",
+  "name": "trixe_python3_9_ngspice",
   "build": {
     "dockerfile": "Dockerfile"
   },
