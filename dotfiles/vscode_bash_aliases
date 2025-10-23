@@ -1,4 +1,4 @@
-alias r='uv run uvicorn src.main:app --reload &'
+alias r='uv run /workspaces/py4spice/src/main.py'
 alias ws='cd $APP_HOME; ls -la;'
 
 alias ll='ls -la'
