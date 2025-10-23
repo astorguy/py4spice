@@ -1,0 +1,3 @@
+.subckt sum in1 in2 out k1=1 k2=1 a=1
+b1 out 0 v = {a * ((v(in1) * k1) + (v(in2) * k2))}
+.ends sum
