@@ -1,0 +1,2 @@
+rload out out_meas 100
+vmeas out_meas 0 dc 0

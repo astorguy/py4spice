@@ -1,0 +1,7 @@
+RLOWER1 div com 10k
+E1 beta com vref div 100
+RUPPER1 out div 10k
+E2 g com beta com 10
+X2 in gain gain k=0.05
+RSOL1 sum out 1
+X3 gain g sum sum k1=1 k2=1 a=1
