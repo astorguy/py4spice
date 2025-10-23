@@ -1,6 +1,6 @@
-alias r='uv run /workspaces/py4spice/src/main.py'
+alias r='uv run /workspaces/py4spice/circuits/simple_rc/python/main.py'
 alias ws='cd $APP_HOME; ls -la;'
 
 alias ll='ls -la'
 alias hi='history'
-alias c='clear'
+alias clr='clear'
