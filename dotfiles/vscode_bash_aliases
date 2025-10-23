@@ -3,3 +3,4 @@ alias ws='cd $APP_HOME; ls -la;'
 
 alias ll='ls -la'
 alias hi='history'
+alias c='clear'
