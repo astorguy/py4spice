@@ -12,7 +12,7 @@ vin in 0 dc 12
 
 
 .control
-* timestamp: fri oct 24 21:31:15 2025
+* timestamp: fri oct 24 21:40:10 2025
 set wr_singlescale  $ makes one x-axis for wrdata
 set wr_vecnames     $ puts names at top of columns
 op

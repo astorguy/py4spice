@@ -2,14 +2,14 @@
 
 from .analyses import Analyses
 from .control import Control
-from .globals_types import (
-    numpy_flt,
-    AnaType,
-    TABLE_DATA,
-    PLOT_DATA,
-    TIME_AXIS,
-    FREQ_AXIS,
-)
+# from .globals_types import (
+#     numpy_flt,
+#     AnaType,
+#     TABLE_DATA,
+#     PLOT_DATA,
+#     TIME_AXIS,
+#     FREQ_AXIS,
+# )
 from .kicad_netlist import KicadNetlist
 from .step_info import StepInfo
 from .netlist import Netlist
