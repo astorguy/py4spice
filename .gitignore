@@ -1,6 +1,3 @@
-# py4spice generated files
-**/top*.cir
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
