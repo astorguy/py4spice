@@ -1,3 +1,5 @@
+import py4spice
+
 def simple_rc():
     print("simple_rc executed")
 
