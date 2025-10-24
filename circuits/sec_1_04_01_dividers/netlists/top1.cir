@@ -1,0 +1,22 @@
+* title line
+
+r1 in out1 140
+r2 in out2 132
+rload1 out1 out1_com 100
+rload2 out2 out2_com 50
+
+vmeas1 out1_com 0 dc 0
+vmeas2 out2_com 0 dc 0
+
+vin in 0 dc 12
+
+
+.control
+* timestamp: fri oct 24 21:12:10 2025
+set wr_singlescale  $ makes one x-axis for wrdata
+set wr_vecnames     $ puts names at top of columns
+op
+print line all > /workspaces/py4spice/circuits/sec_1_04_01_dividers/sim_results/op1.txt
+quit
+.endc
+.end

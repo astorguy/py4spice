@@ -96,12 +96,6 @@ def initialize() -> tuple[
     netlists_dict[Ky.STIMULUS] = spi.Netlist(netlists_path / "stimulus.cir")
     netlists_dict[Ky.SUPPLIES] = spi.Netlist(netlists_path / "supplies.cir")
 
-    print(f"Project path: {proj_path}")
-    print(f"Product section: {PROJECT_SECTION}")
-    print(f"NGSPICE executable: {ngspice_exe}")
-    print(f"Netlists path: {netlists_path}")
-    print(f"Results path: {results_path}")
-
     # Define a vector dictionary for simulation and post-simulation analysis
     vectors_dict = {
         Ky.VEC_ALL: spi.Vectors("all"),
@@ -124,8 +118,104 @@ def initialize() -> tuple[
     return paths_dict, netlists_dict, vectors_dict
 
 
+def part1(
+    my_paths_dict: dict[str, Path],
+    my_netlists_dict: dict[str, spi.Netlist],
+    my_vectors_dict: dict[str, spi.Vectors],
+) -> dict[str, spi.Netlist]:
+    # Define analyses
+    list_of_analyses: list[spi.Analyses] = []  # start with an empty list
+
+    # 1st analysis: operating point
+    op1 = spi.Analyses(
+        name="op1",
+        cmd_type="op",
+        cmd="op",
+        vector=my_vectors_dict[Ky.VEC_ALL],
+        results_loc=my_paths_dict[Ky.RESULTS_PATH],
+    )
+    list_of_analyses.append(op1)
+
+    # create control section
+    my_control = spi.Control()  # create 'my_control' object
+    for analysis in list_of_analyses:
+        my_control.insert_lines(analysis.lines_for_cntl())
+    my_netlists_dict[Ky.CONTROL] = spi.Netlist(str(my_control))
+
+    # concatenate all tne netlists to make top1 and add to netlist dict
+    my_netlists_dict[Ky.TOP1] = (
+        my_netlists_dict[Ky.TITLE]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.DUT]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.SUPPLIES]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.STIMULUS]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.CONTROL]
+        + my_netlists_dict[Ky.END_LINE]
+        + my_netlists_dict[Ky.BLANKLINE]
+    )
+    # write netlist to a file so ngspice can read it
+    top_filename: Path = my_paths_dict[Ky.NETLISTS_PATH] / "top1.cir"
+    my_netlists_dict[Ky.TOP1].write_to_file(top_filename)
+
+    # prepare simulate object, print out command, and simulate
+    sim: spi.Simulate = spi.Simulate(
+        ngspice_exe=my_paths_dict[Ky.NGSPICE_EXE],
+        netlist_filename=top_filename,
+        transcript_filename=my_paths_dict[Ky.SIM_TRANSCRIPT_FILENAME],
+        name="sim1",
+        timeout=20,
+    )
+    # spi.print_section("Ngspice Command", sim1) # print out command
+    sim.run()  # run the Ngspice simulation
+
+    # convert the raw results into list of SimResults objects
+    sim_results: list[spi.SimResults] = [
+        spi.SimResults.from_file(analysis.cmd_type, analysis.results_filename)
+        for analysis in list_of_analyses
+    ]
+    (my_op1,) = sim_results  # give each SimResults object an easier name
+
+    # diaplay results for operating point analysis
+    spi.print_section("Operating Point Results", my_op1.table_for_print())
+
+    # Calculate power and efficiency
+    vin: float = my_op1.data_table[str(my_vectors_dict[Ky.VEC_VIN])]
+    iin: float = my_op1.data_table[str(my_vectors_dict[Ky.VEC_IIN])]
+    vout1: float = my_op1.data_table[str(my_vectors_dict[Ky.VEC_VOUT1])]
+    vout2: float = my_op1.data_table[str(my_vectors_dict[Ky.VEC_VOUT2])]
+    iout1: float = my_op1.data_table[str(my_vectors_dict[Ky.VEC_IOUT1])]
+    iout2: float = my_op1.data_table[str(my_vectors_dict[Ky.VEC_IOUT2])]
+
+    pr1: float = (vin - vout1) * iout1
+    pr2: float = (vin - vout2) * iout2
+    pout1: float = vout1 * iout1
+    pout2: float = vout2 * iout2
+    pout: float = pout1 + pout2
+    pin: float = vin * -iin
+    eta: float = pout / pin
+
+    print(f"p1 = {pr1:.4g}W")
+    print(f"p2 = {pr2:.4g}W")
+    print(f"pout1 = {pout1:.4g}W")
+    print(f"pout2 = {pout2:.4g}W")
+    print(f"pout = {pout:.4g}W")
+    print(f"pin = {pin:.4g}W")
+    print(f"eta = {eta * 100:.4g}%")
+
+    return my_netlists_dict
+
+
 def main():
+    # initialize paths, netlists, and vectors dictionaries
     paths_dict, netlists_dict, vectors_dict = initialize()
+
+    # Part 1: Simulate and analyze a resistive divider
+    # note: we pass back the netlists_dict because the top1 netlist was added to it
+    netlists_dict = part1(paths_dict, netlists_dict, vectors_dict)
 
 
 if __name__ == "__main__":
