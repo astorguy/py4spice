@@ -1,5 +1,7 @@
-alias r='uv run uvicorn src.main:app --reload &'
-alias ws='cd $APP_HOME; ls -la;'
+alias r='uv run /workspaces/py4spice/circuits/sec_1_04_01_dividers/python/__main__.py'
+alias ws='cd $APP_HOME; ls -la'
 
+alias al='alias'
 alias ll='ls -la'
 alias hi='history'
+alias clr='clear'

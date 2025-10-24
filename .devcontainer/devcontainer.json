@@ -1,5 +1,5 @@
 {
-  "name": "trixe_python3_9_ngspice",
+  "name": "trixe_python3_14_ngspice",
   "build": {
     "dockerfile": "Dockerfile"
   },
@@ -12,18 +12,19 @@
   "customizations": {
     "codespaces": {
       "openFiles": [
-        "./.devcontainer/devcontainer.json"
+        "./circuits/sec_1_04_01_dividers/python/__main__.py"
       ]
     },
     "vscode": {
       "extensions": [
+        "charliermarsh.ruff",
         "github.copilot",
         "ms-python.python",
-        "charliermarsh.ruff",
         "ms-python.vscode-pylance",
-        "wesbos.theme-cobalt2",
-        "tamasfe.even-better-toml",
+        "ms-toolsai.jupyter",
         "ryanolsonx.solarized",
+        "tamasfe.even-better-toml",
+        "wesbos.theme-cobalt2",
         "xuanli.spice"
       ],
       "settings": {

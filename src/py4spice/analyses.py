@@ -1,10 +1,8 @@
 """Vector set of signals for which to gather data, plot, ... """
 
 from pathlib import Path
-from typing import Literal
 from .vectors import Vectors
-
-AnalysisType = Literal["op", "dc", "tr", "ac"]  # typing for Analysis types
+from .globals_types import AnaType
 
 
 class Analyses:
@@ -13,27 +11,50 @@ class Analyses:
     def __init__(
         self,
         name: str,
-        cmd_type: AnalysisType,
-        cmd: list[str | int | float],
+        cmd_type: AnaType,
+        cmd: str,
         vector: Vectors,
         results_loc: Path,
     ) -> None:
+        self.name = name
+        self.cmd_type: AnaType = cmd_type  # "tran", "ac", ...
+        self.cmd = cmd
+        self.vector = vector
+        self.results_loc = results_loc
 
-        self.name: str = name
-        self.cmd_type = cmd_type  # "tran", "ac", ...
-        self.cmd_strings: list[str] = [str(item) for item in cmd]
-        self.cmd_line: str = " ".join(self.cmd_strings)
-        results_filename: Path = results_loc / f"{self.name}.txt"
+    @property
+    def results_filename(self) -> Path:
+        """full path to the result file"""
+        return self.results_loc / f"{self.name}.txt"
 
-        self.vec_output = ""  # initialize to nothing
+    @property
+    def vec_output(self) -> str:
+        """lines for control file listing vectors"""
+        # results_filename: Path = self.results_loc / f"{self.name}.txt"
+        vec_listing = ""  # initialize to blank
+
         if self.cmd_type == "ac":
-            self.vec_output = f"wrdata {results_filename} {vector}"
+            vec_listing = f"wrdata {self.results_filename} {self.vector}"
         if self.cmd_type == "dc":
-            self.vec_output = f"wrdata {results_filename} {vector}"
+            vec_listing = f"wrdata {self.results_filename} {self.vector}"
+        if self.cmd_type == "disto":
+            vec_listing = f"wrdata {self.results_filename} {self.vector}"
+        if self.cmd_type == "noise":
+            vec_listing = f"wrdata {self.results_filename} {self.vector}"
         if self.cmd_type == "op":
-            self.vec_output = f"print line {vector} > {results_filename}"
-        if self.cmd_type == "tr":
-            self.vec_output = f"wrdata {results_filename} {vector}"
+            vec_listing = f"print line {self.vector} > {self.results_filename}"
+        if self.cmd_type == "pz":
+            vec_listing = f"wrdata {self.results_filename} {self.vector}"
+        if self.cmd_type == "sens":
+            vec_listing = f"print line {self.vector} > {self.results_filename}"
+        if self.cmd_type == "sp":
+            vec_listing = f"wrdata {self.results_filename} {self.vector}"
+        if self.cmd_type == "tf":
+            vec_listing = f"print line {self.vector} > {self.results_filename}"
+        if self.cmd_type == "tran":
+            vec_listing = f"wrdata {self.results_filename} {self.vector}"
+
+        return vec_listing
 
     def lines_for_cntl(self) -> list[str]:
         """returns a list of the command lines for the control file
@@ -41,4 +62,4 @@ class Analyses:
         Returns:
             list[str]: command lines
         """
-        return [self.cmd_line, self.vec_output]
+        return [self.cmd, self.vec_output]

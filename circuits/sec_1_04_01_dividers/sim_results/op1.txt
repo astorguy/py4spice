@@ -1,0 +1,8 @@
+in = 1.200000e+01
+out1 = 5.000000e+00
+out1_com = 0.000000e+00
+out2 = 3.296703e+00
+out2_com = 0.000000e+00
+vin#branch = -1.15934e-01
+vmeas1#branch = 5.000000e-02
+vmeas2#branch = 6.593407e-02

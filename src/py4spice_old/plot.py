@@ -1,12 +1,14 @@
 """Line plot multiple pd.DataFrame results from simulation
 """
 from pathlib import Path
-from typing import Optional, Literal
-import matplotlib.figure as fig
-import matplotlib.pyplot as plt
-from cycler import cycler
-from .globals_types import numpy_flt
-
+from typing import TypeAlias, Optional, Literal
+import pandas as pd
+import numpy as np
+import numpy.typing as npt
+import matplotlib.figure as fig  # type: ignore
+import matplotlib.pyplot as plt  # type: ignore
+import matplotlib.style  # type: ignore
+from .vectors import Vectors
 
 # type aliases
 Scale = Literal["linear", "log"]
@@ -14,63 +16,66 @@ Scale = Literal["linear", "log"]
 # size of figures to display. set size to match screen monitor size
 FIG_SIZE: tuple[float, float] = (16, 8)
 
+PLOT_STYLE_FILE: str = "./oscilloscope.mplstyle"  # style definition
 
-def oscilloscope_colors() -> None:
-    """Set style properties to look like dark oscilloscope screen"""
+# Alias for type checking
+numpy_floats: TypeAlias = npt.NDArray[np.float64]
+list_of_numpys: TypeAlias = list[numpy_floats]
 
-    plt.rcParams["lines.color"] = "#d8b200"
-    plt.rcParams["patch.edgecolor"] = "#d8b200"
 
-    plt.rcParams["text.color"] = "#d8b200"
+def df_to_columns(dfr: pd.DataFrame) -> list_of_numpys:
+    """Convert dataframe of sim results to a list of numpys (one for each column)
 
-    plt.rcParams["axes.facecolor"] = "black"
-    plt.rcParams["axes.edgecolor"] = "#d8b200"
-    plt.rcParams["axes.labelcolor"] = "#d8b200"
+    Args:
+        dfr (pd.DataFrame): simulation results
 
-    plt.rcParams["axes.prop_cycle"] = cycler(
-        color=["#00FF00", "#00ffff", "#ff00ff", "#ffd200"]
-    )
+    Returns:
+        list_of_numpys: a numpy array for each column (signal)
+    """
+    numpys: list_of_numpys = []
+    column_names: list[str] = list(dfr.columns.values)
+    for name in column_names:
+        numpys.append(dfr[[name]].to_numpy())
+    return numpys
 
-    plt.rcParams["axes.grid"] = True
-    plt.rcParams["axes.grid.axis"] = "both"
-    plt.rcParams["grid.linestyle"] = "dotted"
-    plt.rcParams["xtick.minor.visible"] = True
-    plt.rcParams["ytick.minor.visible"] = True
 
-    plt.rcParams["xtick.color"] = "#d8b200"
-    plt.rcParams["ytick.color"] = "#d8b200"
+def cols_to_curves(
+    list_of_col: list_of_numpys, col_names: list[str], axe: plt.Axes
+) -> None:
+    """create curves from a list of numpy arrays
 
-    plt.rcParams["grid.color"] = "#d8b200"
+    Args:
+        list_of_col (list_of_numpys):
+        col_names (list[str]):
+        axe (plt.Axes): plot object
+    """
+    x_array: numpy_floats = list_of_col[0]  # x-axis is the first column
 
-    plt.rcParams["figure.facecolor"] = "#282828"
-    plt.rcParams["figure.edgecolor"] = "black"
-
-    plt.rcParams["savefig.facecolor"] = "black"
-    plt.rcParams["savefig.edgecolor"] = "black"
-
-    plt.rcParams["legend.edgecolor"] = "#d8b200"
-    plt.rcParams["legend.facecolor"] = "#282828"
-
-    plt.rcParams["boxplot.boxprops.color"] = "white"
-    plt.rcParams["boxplot.capprops.color"] = "white"
-    plt.rcParams["boxplot.flierprops.color"] = "white"
-    plt.rcParams["boxplot.flierprops.markeredgecolor"] = "white"
-    plt.rcParams["boxplot.whiskerprops.color"] = "white"
+    index: int = 1
+    for y_array in list_of_col[1:]:
+        axe.plot(x_array, y_array, label=col_names[index])
+        index += 1
 
 
 def create_plot(
-    x_data: numpy_flt, y_data: list[numpy_flt], y_names: list[str]
+    sim_results: pd.DataFrame, my_vectors: Vectors
 ) -> tuple[fig.Figure, plt.Axes]:
     """Create line plot from simulation results"""
 
     # set style to look like an oscilloscope
-    oscilloscope_colors()
+    matplotlib.style.use(PLOT_STYLE_FILE)
 
     fig_axe: tuple[fig.Figure, plt.Axes] = plt.subplots(figsize=FIG_SIZE)
     axe: plt.Axes = fig_axe[1]
 
-    for index, y_array in enumerate(y_data):
-        axe.plot(x_data, y_array, label=y_names[index])
+    # reduce number of vectors to plot
+    x_axis = [str(sim_results.columns[0])]
+    column_names: list[str] = x_axis + my_vectors.list_out()
+    subset_sim_results: pd.DataFrame = sim_results[column_names]
+
+    # convert to numpy arrays
+    columns: list_of_numpys = df_to_columns(subset_sim_results)
+    cols_to_curves(columns, column_names, axe)
 
     plt.legend(title="Signals:")
 
@@ -83,17 +88,17 @@ class Plot:
     def __init__(
         self,
         name: str,
-        signals: list[numpy_flt],
-        sig_names: list[str],
+        sim_data: pd.DataFrame,
+        vectors: Vectors,
         results_path: Path,
     ) -> None:
-        self.name = name
-        self.signals = signals
-        self.sig_names = sig_names
+        self.name: str = name
+        self.sim_data: pd.DataFrame = sim_data
+        self.vectors: Vectors = vectors
         self.results_path: Path = results_path
 
         # create initial plot
-        self.fig_axe = create_plot(self.signals[0], self.signals[1:], self.sig_names)
+        self.fig_axe: tuple[fig.Figure, plt.Axes] = create_plot(sim_data, self.vectors)
         self.fig: fig.Figure = self.fig_axe[0]
         self.axe: plt.Axes = self.fig_axe[1]
 

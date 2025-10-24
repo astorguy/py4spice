@@ -1,93 +1,54 @@
-"""Python project"""
-
 from pathlib import Path
 from typing import Optional
 
-# these are used in main for testing
-INPUT_FILE = "./nand.cir"
-OUTFILE_FILE = "./nand2.cir"
-REMOVE_TITLE_END = True
-SUBCKT = True
-
 
 class Netlist:
-    """Read netlist, correct, and write new one"""
+    """Manipulates SPICE netlists"""
 
-    def __init__(self, input_file: Optional[Path] = None) -> None:
-        self.netlist_data: list[list[str]] = [[]]
-        if input_file:
-            self.readfile(input_file)
+    def __init__(self, filename_or_string: Optional[Path | str] = None) -> None:
+        self.data: list[str] = []
+        if isinstance(filename_or_string, Path):
+            with open(filename_or_string, "r") as file:
+                self.data = [line.rstrip("\n").lower() for line in file.readlines()]
+        if isinstance(filename_or_string, str):
+            self.data = filename_or_string.lower().split("\n")
 
     def __str__(self) -> str:
-        """write the netlist data to a file"""
-        list_of_lines: list[str] = [" ".join(lines) for lines in self.netlist_data]
-        return "\n".join(list_of_lines)
+        return "\n".join(self.data)
 
-    def readfile(self, filename: Path) -> None:
-        """read a file and create the netlist data"""
-        file_text: str = filename.read_text()
-        lines: list[str] = file_text.splitlines()
-        self.netlist_data = [word.split() for word in lines]
+    def write_to_file(self, filename: Path) -> None:
+        """ "Write netlist object data to a file"""
+        with open(filename, "w") as file:
+            file.write("\n".join(self.data))
 
-    def insert_line(self, index: int, new_line: str) -> None:
-        """insert one or more lines into netlist"""
-        words: list[str] = new_line.split()
-        self.netlist_data.insert(index, words)
+    def __add__(self, other: "Netlist") -> "Netlist":
+        """Concatenate netlists with + operator"""
+        combined_data = self.data + other.data
+        return Netlist("\n".join(combined_data))
 
-    def remove_forwardslashes(self) -> None:
-        """remove forwardslashes form the node names"""
+    def delete_line(self, index: int) -> None:
+        del self.data[index]
 
-        self.netlist_data = [
-            [word.lstrip("/") if word.startswith("/") else word for word in lines]
-            for lines in self.netlist_data
+    def line_starts_with(self, string: str) -> int:
+        """returns index of first line that starts with string"""
+        for i, line in enumerate(self.data):
+            if line.startswith(string):
+                return i
+        return -1
+
+    def del_line_starts_with(self, string: str) -> None:
+        """deletes first line that starts with string"""
+        index = self.line_starts_with(string)
+        if index != -1:
+            del self.data[index]
+
+    def insert_line(self, index: int, line: str) -> None:
+        """inserts string line at index in data list"""
+        self.data.insert(index, line.lower())
+
+    def del_slash(self) -> None:
+        """Deletes foward slashes in lines that begin with letters a through z
+        regardless of case"""
+        self.data = [
+            line.replace("/", "") if line[0].isalpha() else line for line in self.data
         ]
-
-    def remove_first_last_lines(self) -> None:
-        """remove first line (title) and last line (.end)"""
-        del self.netlist_data[0]
-        del self.netlist_data[-1]
-
-    def create_subckt(self) -> None:
-        "look for .subckt line, if exists, make netlist a subckt"
-
-        target = ".subckt"
-
-        target_index = None
-
-        for line_index, line_list in enumerate(self.netlist_data):
-            if line_list[0] == target:
-                target_index = line_index
-                break
-        if target_index:
-            target_line_list = self.netlist_data.pop(target_index)
-            self.netlist_data.insert(0, target_line_list)
-            target_2nd_word = self.netlist_data[0][1]
-            self.netlist_data.append([".ends", target_2nd_word])
-
-    def writefile(self, filename: Path) -> None:
-        """write the netlist data to a file"""
-        list_of_lines: list[str] = [" ".join(lines) for lines in self.netlist_data]
-        big_string: str = "\n".join(list_of_lines)
-        filename.write_text(big_string, "UTF-8")
-
-
-def main() -> None:
-    """testing code"""
-    in_file = Path(INPUT_FILE)
-    out_file = Path(OUTFILE_FILE)
-    netlist1 = Netlist()
-    netlist1.readfile(in_file)
-
-    netlist1.remove_forwardslashes()
-
-    if REMOVE_TITLE_END:
-        netlist1.remove_first_last_lines()
-
-    if SUBCKT:
-        netlist1.create_subckt()
-
-    netlist1.writefile(out_file)
-
-
-if __name__ == "__main__":
-    main()
