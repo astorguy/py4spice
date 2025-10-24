@@ -19,5 +19,5 @@ PROJ_PATH_STR = "/workspaces/py4spice/circuits/sec_1_04_02_lin_reg"
 PROJ_PATH_STR = "/workspaces/py4spice/circuits/sec_1_04_04_lin_reg"
 
 # Section simple_rc
-[SEC_1_04_04]
+[SIMPLE_RC]
 PROJ_PATH_STR = "/workspaces/py4spice/circuits/simple_rc"
