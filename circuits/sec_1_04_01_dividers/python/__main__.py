@@ -88,7 +88,7 @@ def initialize() -> tuple[
     netlists_dict: dict[str, spi.Netlist] = {}  # create empty netlist dictionary
 
     netlists_dict[Ky.BLANKLINE] = spi.Netlist("")  # blank line for spacing
-    netlists_dict[Ky.TITLE] = spi.Netlist("* Title line")  # title line
+    netlists_dict[Ky.TITLE] = spi.Netlist("* voltage divider, section 1.4.1")  # title line
     netlists_dict[Ky.END_LINE] = spi.Netlist(".end")  # end statement
 
     # create netlist objects from files and add to netlist dictionary
@@ -158,7 +158,8 @@ def part1(
         + my_netlists_dict[Ky.BLANKLINE]
     )
     # write netlist to a file so ngspice can read it
-    top_filename: Path = my_paths_dict[Ky.NETLISTS_PATH] / "top1.cir"
+    # top_filename: Path = my_paths_dict[Ky.NETLISTS_PATH] / "top1.cir"
+    top_filename: Path = my_paths_dict[Ky.NETLISTS_PATH] / (Ky.TOP1 + ".cir")
     my_netlists_dict[Ky.TOP1].write_to_file(top_filename)
 
     # prepare simulate object, print out command, and simulate

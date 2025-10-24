@@ -1,4 +1,4 @@
-* title line
+* voltage divider, section 1.4.1
 
 r1 in out1 140
 r2 in out2 132
@@ -12,7 +12,7 @@ vin in 0 dc 12
 
 
 .control
-* timestamp: fri oct 24 21:12:10 2025
+* timestamp: fri oct 24 21:31:15 2025
 set wr_singlescale  $ makes one x-axis for wrdata
 set wr_vecnames     $ puts names at top of columns
 op
