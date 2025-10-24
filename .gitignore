@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Ngspice top level netlists
+top*.cir
+
 # C extensions
 *.so
 
