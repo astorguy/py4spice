@@ -11,10 +11,13 @@ version = "0.0.1"
 authors = [{ name = "Mark Chadwick", email = "mark.chadwick@techsharpen.com" }]
 description = "Python modules for running Ngspice"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.14"
 license = { text = "MIT License" }
 keywords = ["ngspice", "spice", "simulation"]
 classifiers = ["Programming Language :: Python :: 3"]
+dependencies = [
+    "numpy>=2.0.2",
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]
