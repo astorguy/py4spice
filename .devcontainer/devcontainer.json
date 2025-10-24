@@ -17,13 +17,14 @@
     },
     "vscode": {
       "extensions": [
+        "charliermarsh.ruff",
         "github.copilot",
         "ms-python.python",
-        "charliermarsh.ruff",
         "ms-python.vscode-pylance",
-        "wesbos.theme-cobalt2",
-        "tamasfe.even-better-toml",
+        "ms-toolsai.jupyter",
         "ryanolsonx.solarized",
+        "tamasfe.even-better-toml",
+        "wesbos.theme-cobalt2",
         "xuanli.spice"
       ],
       "settings": {
