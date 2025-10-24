@@ -3,10 +3,6 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# igngore top*.cir files
-top*.cir
-top1.cir
-
 # C extensions
 *.so
 
