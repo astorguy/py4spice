@@ -3,10 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Ngspice netlists that start with "top" and end with ".cir"
-# These are simulaton generated, should not be committed to version control.
-**/top*.cir
-**/top1.cir
+# igngore top*.cir files
+top*.cir
+top1.cir
 
 # C extensions
 *.so
