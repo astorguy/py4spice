@@ -12,7 +12,7 @@
   "customizations": {
     "codespaces": {
       "openFiles": [
-        "./circuits/simple_rc/python/__main__.py"
+        "./circuits/sec_1_04_01_dividers/python/__main__.py"
       ]
     },
     "vscode": {
