@@ -1,6 +1,5 @@
 # Top-level settings (common to all projects)
 [GLOBAL]
-PROJECT = "SEC_1_04_04"                   # points to section of config file
 NGSPICE_EXE_STR = "/usr/bin/ngspice"
 NETLISTS_DIR_STR = "netlists"             # relative to proj dir, where netlists will be stored
 RESULTS_DIR_STR = "sim_results"           # rel to proj dir, where sim results will be stored
