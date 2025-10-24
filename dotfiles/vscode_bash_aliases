@@ -1,5 +1,4 @@
-alias r='uv run /workspaces/py4spice/circuits/simple_rc/python/__main__.py'
-alias wk='cd /workspaces/py4spice/circuits/simple_rc/python; ls -la'
+alias r='uv run /workspaces/py4spice/circuits/sec_1_04_01_dividers/python/__main__.py'
 alias ws='cd $APP_HOME; ls -la'
 
 alias al='alias'
