@@ -6,6 +6,7 @@ __pycache__/
 # Ngspice netlists that start with "top" and end with ".cir"
 # These are simulaton generated, should not be committed to version control.
 **/top*.cir
+**/top1.cir
 
 # C extensions
 *.so
