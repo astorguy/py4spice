@@ -1,5 +1,6 @@
 # py4spice generated files
 **/top*.cir
+sim_results/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
