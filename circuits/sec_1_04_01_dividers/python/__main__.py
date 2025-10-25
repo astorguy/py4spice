@@ -14,7 +14,6 @@ class Ky:
 
     # Keys for decoding config file
     GLOBAL = "GLOBAL"
-    PROJECT = "PROJECT"
     NGSPICE_EXE_STR = "NGSPICE_EXE_STR"
     NETLISTS_DIR_STR = "NETLISTS_DIR_STR"
     RESULTS_DIR_STR = "RESULTS_DIR_STR"
