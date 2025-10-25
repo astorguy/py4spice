@@ -16,7 +16,3 @@ PROJ_PATH_STR = "/workspaces/py4spice/circuits/sec_1_04_02_lin_reg"
 # Section 1-04-04 Linear Regulator
 [SEC_1_04_04]
 PROJ_PATH_STR = "/workspaces/py4spice/circuits/sec_1_04_04_lin_reg"
-
-# Section simple_rc
-[SIMPLE_RC]
-PROJ_PATH_STR = "/workspaces/py4spice/circuits/simple_rc"
