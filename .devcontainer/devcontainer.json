@@ -33,7 +33,8 @@
         "python.analysis.typeCheckingMode": "strict",
         "python.analysis.diagnosticMode": "workspace",
         "python.analysis.diagnosticSeverityOverrides": {
-          "reportMissingTypeStubs": "none",
+          "reportMissingTypeStubs": "none"
+          },
         "python.formatting.provider": "ruff",
         "python.linting.provider": "ruff",
         "workbench.colorTheme": "Cobalt2",
