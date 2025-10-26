@@ -30,7 +30,7 @@
       "settings": {
         "terminal.integrated.defaultProfile.linux": "bash",
         "editor.formatOnSave": true,
-        "python.analysis.typeCheckingMode": "basic",
+        "python.analysis.typeCheckingMode": "off",
         "python.analysis.diagnosticMode": "workspace",
         "python.formatting.provider": "ruff",
         "python.linting.provider": "ruff",
