@@ -30,11 +30,8 @@
       "settings": {
         "terminal.integrated.defaultProfile.linux": "bash",
         "editor.formatOnSave": true,
-        "python.analysis.typeCheckingMode": "strict",
+        "python.analysis.typeCheckingMode": "basic",
         "python.analysis.diagnosticMode": "workspace",
-        "python.analysis.inlayHints.variableTypes.enabled": true,
-        "python.analysis.inlayHints.functionReturnTypes.enabled": true,
-        "python.analysis.inlayHints.parameterNames.enabled": "all",
         "python.formatting.provider": "ruff",
         "python.linting.provider": "ruff",
         "workbench.colorTheme": "Cobalt2",
