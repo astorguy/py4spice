@@ -8,8 +8,6 @@ from matplotlib.figure import Figure
 from matplotlib.axes import Axes
 import matplotlib.pyplot as plt
 
-
-
 from .globals_types import numpy_flt
 
 # type aliases
