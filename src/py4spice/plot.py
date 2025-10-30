@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Optional, Literal
 import matplotlib.figure as fig
 import matplotlib.pyplot as plt
+from matplotlib.axes import Axes
 from cycler import cycler
 from .globals_types import numpy_flt
 
@@ -60,14 +61,14 @@ def oscilloscope_colors() -> None:
 
 def create_plot(
     x_data: numpy_flt, y_data: list[numpy_flt], y_names: list[str]
-) -> tuple[fig.Figure, plt.Axes]:
+) -> tuple[fig.Figure, Axes]:
     """Create line plot from simulation results"""
 
     # set style to look like an oscilloscope
     oscilloscope_colors()
 
-    fig_axe: tuple[fig.Figure, plt.Axes] = plt.subplots(figsize=FIG_SIZE)
-    axe: plt.Axes = fig_axe[1]
+    fig_axe: tuple[fig.Figure, Axes] = plt.subplots(figsize=FIG_SIZE)
+    axe: Axes = fig_axe[1]
 
     for index, y_array in enumerate(y_data):
         axe.plot(x_data, y_array, label=y_names[index])
@@ -95,7 +96,7 @@ class Plot:
         # create initial plot
         self.fig_axe = create_plot(self.signals[0], self.signals[1:], self.sig_names)
         self.fig: fig.Figure = self.fig_axe[0]
-        self.axe: plt.Axes = self.fig_axe[1]
+        self.axe: Axes = self.fig_axe[1]
 
     def set_title(self, title: str) -> None:
         """title for plot"""
