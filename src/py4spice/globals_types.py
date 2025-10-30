@@ -1,7 +1,6 @@
 """Global constants and types"""
 
 from typing import TypeAlias, Literal
-import numpy as np
 import numpy.typing as npt
 
 # Alias for type checking
