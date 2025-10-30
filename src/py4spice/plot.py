@@ -1,13 +1,16 @@
-"""Line plot multiple pd.DataFrame results from simulation
-"""
-from pathlib import Path
-from typing import Optional, Literal
-import matplotlib.figure as fig
-import matplotlib.pyplot as plt
-from matplotlib.axes import Axes
-from cycler import cycler
-from .globals_types import numpy_flt
+"""Line plot multiple pd.DataFrame results from simulation"""
 
+from pathlib import Path
+from typing import Literal, Optional
+from cycler import cycler
+
+from matplotlib.figure import Figure
+from matplotlib.axes import Axes
+import matplotlib.pyplot as plt
+
+
+
+from .globals_types import numpy_flt
 
 # type aliases
 Scale = Literal["linear", "log"]
@@ -61,21 +64,22 @@ def oscilloscope_colors() -> None:
 
 def create_plot(
     x_data: numpy_flt, y_data: list[numpy_flt], y_names: list[str]
-) -> tuple[fig.Figure, Axes]:
+) -> tuple[Figure, Axes]:
     """Create line plot from simulation results"""
 
     # set style to look like an oscilloscope
     oscilloscope_colors()
 
-    fig_axe: tuple[fig.Figure, Axes] = plt.subplots(figsize=FIG_SIZE)
-    axe: Axes = fig_axe[1]
+    fig: Figure
+    axe: Axes
+    fig, axe = plt.subplots(nrows=1, ncols=1, figsize=FIG_SIZE)
 
     for index, y_array in enumerate(y_data):
         axe.plot(x_data, y_array, label=y_names[index])
 
     plt.legend(title="Signals:")
 
-    return fig_axe
+    return fig, axe
 
 
 class Plot:
@@ -95,7 +99,7 @@ class Plot:
 
         # create initial plot
         self.fig_axe = create_plot(self.signals[0], self.signals[1:], self.sig_names)
-        self.fig: fig.Figure = self.fig_axe[0]
+        self.fig: Figure = self.fig_axe[0]
         self.axe: Axes = self.fig_axe[1]
 
     def set_title(self, title: str) -> None:
