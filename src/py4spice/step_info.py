@@ -1,8 +1,10 @@
-"""Signal measurements """
+"""Signal measurements"""
 
 from typing import Any
+
 import numpy as np
 from scipy.interpolate import interp1d
+
 from .globals_types import numpy_flt
 
 
@@ -79,23 +81,29 @@ class StepInfo:
     @property
     def xlo(self) -> float:
         """X when Y at rise low threshold"""
-        y_greater_equal_ylo = np.where(self.y_array_lin >= self.ylo)
-        index = y_greater_equal_ylo[0][0]
-        return self.x_array_lin[index]
+        idxs = np.where(self.y_array_lin >= self.ylo)[0]
+        if idxs.size == 0:
+            raise ValueError("No sample point meets the low threshold (ylo).")
+        index = int(idxs[0])  # convert numpy index to Python int
+        return float(self.x_array_lin[index])  # convert numpy scalar to builtin float
 
     @property
     def xmid(self) -> float:
         """X when Y at 50% rise"""
-        y_greater_equal_ymid = np.where(self.y_array_lin >= self.ymid)
-        index = y_greater_equal_ymid[0][0]
-        return self.x_array_lin[index]
+        idxs = np.where(self.y_array_lin >= self.ymid)[0]
+        if idxs.size == 0:
+            raise ValueError("No sample point meets the mid threshold (ymid).")
+        index = int(idxs[0])  # convert numpy index to Python int
+        return float(self.x_array_lin[index])  # convert numpy scalar to builtin float
 
     @property
     def xhi(self) -> float:
         """X when Y at rise hi threshold"""
-        y_greater_equal_yhi = np.where(self.y_array_lin >= self.yhi)
-        index = y_greater_equal_yhi[0][0]
-        return self.x_array_lin[index]
+        idxs = np.where(self.y_array_lin >= self.yhi)[0]
+        if idxs.size == 0:
+            raise ValueError("No sample point meets the high threshold (yhi).")
+        index = int(idxs[0])  # convert numpy index to Python int
+        return float(self.x_array_lin[index])  # convert numpy scalar to builtin float
 
     @property
     def risetime(self) -> float:
@@ -121,11 +129,18 @@ class StepInfo:
         # thres where y approaches xbegin
         y_thres = self.yinit + self.ydelta * self.thres_start
 
-        # array of indices where y <= ythres
+        # array of indices where y <= y_thres
         y_less_equal_thres = np.where(self.y_array_lin <= y_thres)[0]
 
+        if y_less_equal_thres.size == 0:
+            # This should generally not happen if thres_start is small and the
+            # data starts at yinit, but it handles the potential edge case.
+            raise ValueError("No sample point is below the starting threshold (xinit).")
+
         index = y_less_equal_thres[-1]
-        return self.x_array_lin[index]
+
+        # Convert index to Python int and result to float for consistency
+        return float(self.x_array_lin[int(index)])
 
     @property
     def settlingtime(self) -> float:
@@ -137,16 +152,22 @@ class StepInfo:
         indices_equal_less_err_lo = np.where(self.y_array_lin <= y_err_lo)[0]
         indices_equal_greater_err_hi = np.where(self.y_array_lin >= y_err_hi)[0]
 
-        # which of the list of indices above has largest index, use that one as last
-        last_index = self.y_array_lin[-1]  # initialize to last y value
+        # Initialize last_index to the index of the last point (safe default)
+        last_index = len(self.y_array_lin) - 1
 
-        # replace last_index with highest lo value
+        # Check if there are points below the low error threshold
         if len(indices_equal_less_err_lo) > 0:
+            # If so, the last_index is the last time it dipped below
             last_index = indices_equal_less_err_lo[-1]
 
-        # replace last_index if this one is higher
+        # Check if there are points above the high error threshold
         if len(indices_equal_greater_err_hi) > 0:
-            if indices_equal_greater_err_hi[-1] >= last_index:
+            # If the last time it went above is later than the last time it went below, use that index
+            if indices_equal_greater_err_hi[-1] > last_index:  # Use '>' not '>='
                 last_index = indices_equal_greater_err_hi[-1]
 
-        return self.x_array_lin[last_index] - self.xinit
+        # Explicitly convert the index to a Python int to satisfy Pylance
+        final_index_int = int(last_index)
+
+        # Ensure the final calculation is returned as a float
+        return float(self.x_array_lin[final_index_int] - self.xinit)
