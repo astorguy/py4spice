@@ -17,6 +17,7 @@ keywords = ["ngspice", "spice", "simulation"]
 classifiers = ["Programming Language :: Python :: 3"]
 dependencies = [
     "matplotlib>=3.10.7",
+    "mypy>=1.18.2",
     "numpy>=2.0.2",
     "scipy>=1.16.2",
 ]
@@ -24,6 +25,34 @@ dependencies = [
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["py4spice"]
+
+[tool.mypy]
+pretty = true
+# files = ["src/py4spice/*.py", "circuits/**/*.py"]
+# files = [
+#     "src/py4spice/*.py",
+#     "circuits/sec_1_04_01_dividers/python/sec_1_04_01.py",
+# ]
+files = [
+    "src/py4spice/__init__.py",
+    "src/py4spice/analyses.py",
+    "src/py4spice/control.py",
+    "src/py4spice/globals_types.py",
+    "src/py4spice/kicad_netlist.py",
+    "src/py4spice/netlist.py",
+    "src/py4spice/plot.py",
+    "src/py4spice/print_section.py",
+    "src/py4spice/sim_results.py",
+    "src/py4spice/simulate.py",
+    # "src/py4spice/step_info.py",
+    "src/py4spice/vectors.py",
+    # "src/py4spice/waveforms.py",
+]
+check_untyped_defs = true
+disallow_untyped_defs = true
+strict = true
+warn_unused_ignores = true
+warn_return_any = true
 
 # recommended setting from pytest docs
 [tool.pytest.ini_options]
@@ -33,6 +62,4 @@ addopts = ["--import-mode=importlib"]
 repository = "https://github.com/astorguy/py4spice"
 
 [dependency-groups]
-dev = [
-    "ruff>=0.14.0",
-]
+dev = ["ruff>=0.14.0"]
