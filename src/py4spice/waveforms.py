@@ -2,7 +2,7 @@ from typing import TypeAlias
 
 import numpy as np
 import numpy.typing as npt
-from scipy.interpolate import interp1d  # type: ignore
+from scipy.interpolate import interp1d
 
 numpy_flt: TypeAlias = npt.NDArray[np.float64]
 
