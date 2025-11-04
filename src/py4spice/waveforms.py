@@ -28,7 +28,7 @@ class Waveforms:
     @property
     def npts(self) -> int:
         """number of data points (rows) in the waveform"""
-        return self.data.shape[0]
+        return int(self.data.shape[0])
 
     def vec_subset(self, vecs: list[str]) -> None:
         """create a smaller subset of the header vectors
