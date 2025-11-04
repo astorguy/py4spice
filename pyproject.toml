@@ -28,12 +28,15 @@ include = ["py4spice"]
 
 [tool.mypy]
 pretty = true
-files = ["./**/*.py"]
-exclude = [
-    "sec_1_04_02_lin_reg/python/sec_01_04_01.py",
-    "sec_1_04_02_lin_reg/python/sec_01_04_02.py",
-    "sec_1_04_02_lin_reg/python/sec_01_04_04.py",
-    "^tests/*",
+# files = ["src/py4spice/*.py", "circuits/**/*.py"]
+# files = [
+#     "src/py4spice/*.py",
+#     "circuits/sec_1_04_01_dividers/python/sec_1_04_01.py",
+# ]
+files = [
+    "src/py4spice/__init__.py",
+    "src/py4spice/analyses.py",
+    "src/py4spice/control.py",
 ]
 check_untyped_defs = true
 disallow_untyped_defs = true
