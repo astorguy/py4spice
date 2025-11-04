@@ -37,11 +37,20 @@ files = [
     "src/py4spice/__init__.py",
     "src/py4spice/analyses.py",
     "src/py4spice/control.py",
+    "src/py4spice/globals_types.py",
+    "src/py4spice/kicad_netlist.py",
+    "src/py4spice/netlist.py",
+    "src/py4spice/plot.py",
+    "src/py4spice/print_section.py",
+    "src/py4spice/sim_results.py",
+    "src/py4spice/simulate.py",
+    # "src/py4spice/step_info.py",
+    "src/py4spice/vectors.py",
+    # "src/py4spice/waveforms.py",
 ]
 check_untyped_defs = true
 disallow_untyped_defs = true
-strict = false
-ignore_missing_imports = true
+strict = true
 warn_unused_ignores = true
 warn_return_any = true
 
