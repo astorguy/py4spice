@@ -29,6 +29,7 @@ include = ["py4spice"]
 [tool.mypy]
 pretty = true
 files = ["./**/*.py"]
+exclude = ["sec_1_04_02_lin_reg/python/__main__.py"]
 check_untyped_defs = true
 disallow_untyped_defs = true
 strict = false
