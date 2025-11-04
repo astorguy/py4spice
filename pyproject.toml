@@ -26,6 +26,16 @@ dependencies = [
 where = ["src"]
 include = ["py4spice"]
 
+[tool.mypy]
+pretty = true
+files = ["./**/*.py"]
+check_untyped_defs = true
+disallow_untyped_defs = true
+strict = false
+ignore_missing_imports = true
+warn_unused_ignores = true
+warn_return_any = true
+
 # recommended setting from pytest docs
 [tool.pytest.ini_options]
 addopts = ["--import-mode=importlib"]
@@ -34,6 +44,4 @@ addopts = ["--import-mode=importlib"]
 repository = "https://github.com/astorguy/py4spice"
 
 [dependency-groups]
-dev = [
-    "ruff>=0.14.0",
-]
+dev = ["ruff>=0.14.0"]
