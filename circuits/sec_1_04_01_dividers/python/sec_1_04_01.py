@@ -83,17 +83,19 @@ def initialize() -> tuple[
     }
 
     # netlists_dict = define_netlists(paths_dict)
-    netlists_path: Path = paths_dict[Ky.NETLISTS_PATH]  # make shorter alias
+    nets_path: Path = paths_dict[Ky.NETLISTS_PATH]  # make shorter alias
     netlists_dict: dict[str, spi.Netlist] = {}  # create empty netlist dictionary
 
     netlists_dict[Ky.BLANKLINE] = spi.Netlist("")  # blank line for spacing
-    netlists_dict[Ky.TITLE] = spi.Netlist("* voltage divider, section 1.4.1")  # title line
+    netlists_dict[Ky.TITLE] = spi.Netlist(
+        "* voltage divider, section 1.4.1"
+    )  # title line
     netlists_dict[Ky.END_LINE] = spi.Netlist(".end")  # end statement
 
     # create netlist objects from files and add to netlist dictionary
-    netlists_dict[Ky.DUT] = spi.Netlist(netlists_path / "dut.cir")
-    netlists_dict[Ky.STIMULUS] = spi.Netlist(netlists_path / "stimulus.cir")
-    netlists_dict[Ky.SUPPLIES] = spi.Netlist(netlists_path / "supplies.cir")
+    netlists_dict[Ky.DUT] = spi.Netlist(nets_path / "dut.cir")
+    netlists_dict[Ky.STIMULUS] = spi.Netlist(nets_path / "stimulus.cir")
+    netlists_dict[Ky.SUPPLIES] = spi.Netlist(nets_path / "supplies.cir")
 
     # Define a vector dictionary for simulation and post-simulation analysis
     vectors_dict = {
@@ -209,7 +211,7 @@ def part1(
     return my_netlists_dict
 
 
-def main():
+def main() -> None:
     # initialize paths, netlists, and vectors dictionaries
     paths_dict, netlists_dict, vectors_dict = initialize()
 
