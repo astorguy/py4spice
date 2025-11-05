@@ -63,7 +63,7 @@ def initialize() -> tuple[
     return paths_dict, netlists_dict, vectors_dict
 
 
-def main():
+def main() -> None:
     # initialize paths, netlists, and vectors dictionaries
     paths_dict, netlists_dict, vectors_dict = initialize()
 
