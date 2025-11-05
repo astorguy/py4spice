@@ -113,6 +113,20 @@ def initialize() -> tuple[
     return paths_dict, netlists_dict, vectors_dict
 
 
+def create_pwr_png(
+    pwr1: spi.Waveforms,
+    my_vectors_dict: dict[str, spi.Vectors],
+    my_paths_dict: dict[str, Path],
+) -> None:
+    """Create and display power efficiency plot."""
+    plot_data = pwr1.x_axis_and_sigs(my_vectors_dict[Ky.VEC_ETA].list_out())
+    y_names = my_vectors_dict[Ky.VEC_ETA].list_out()
+    my_plt = spi.Plot("my_plot", plot_data, y_names, my_paths_dict[Ky.RESULTS_PATH])
+    my_plt.set_title("Power Efficiency")
+    my_plt.define_axes(("Vin", "voltage", "linear"), ("efficiency", "%", "linear"))
+    my_plt.png()  # create png file for plot in results directory
+
+
 def part1(
     my_paths_dict: dict[str, Path],
     my_netlists_dict: dict[str, spi.Netlist],
@@ -202,12 +216,8 @@ def part1(
     # reduce waves to just "eta"
     pwr1.vec_subset(my_vectors_dict[Ky.VEC_ETA].list_out())
 
-    # plot the efficiency vs. Vin
-    plot_data = pwr1.x_axis_and_sigs(my_vectors_dict[Ky.VEC_ETA].list_out())
-    y_names = my_vectors_dict[Ky.VEC_ETA].list_out()
-    my_plt = spi.Plot("my_plot", plot_data, y_names, my_paths_dict[Ky.RESULTS_PATH])
-    my_plt.set_title("Power Efficiency")
-    my_plt.define_axes(("Vin", "voltage", "linear"), ("efficiency", "%", "linear"))
+    # create png file for the efficiency vs. Vin
+    create_pwr_png(pwr1, my_vectors_dict, my_paths_dict)
 
     return my_netlists_dict
 
