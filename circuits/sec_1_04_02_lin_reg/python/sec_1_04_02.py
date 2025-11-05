@@ -143,7 +143,7 @@ def part1(
     my_paths_dict: dict[str, Path],
     my_netlists_dict: dict[str, spi.Netlist],
     my_vectors_dict: dict[str, spi.Vectors],
-) -> dict[str, spi.Netlist]:
+) -> None:
     # Define analyses
     list_of_analyses: list[spi.Analyses] = []  # start with an empty list
 
@@ -220,16 +220,13 @@ def part1(
     # create png file for the efficiency vs. Vin
     create_pwr_png(dc1_results, my_vectors_dict, my_paths_dict)
 
-    return my_netlists_dict
-
 
 def main() -> None:
     # initialize paths, netlists, and vectors dictionaries
     paths_dict, netlists_dict, vectors_dict = initialize()
 
     # Part 1: Simulate and analyze
-    # note: we pass back the netlists_dict because the top1 netlist was added to it
-    netlists_dict = part1(paths_dict, netlists_dict, vectors_dict)
+    part1(paths_dict, netlists_dict, vectors_dict)
 
 
 if __name__ == "__main__":
