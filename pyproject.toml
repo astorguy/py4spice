@@ -44,6 +44,8 @@ files = [
     "src/py4spice/vectors.py",
     "src/py4spice/waveforms.py",
     "circuits/sec_1_04_01_dividers/python/sec_1_04_01.py",
+    "circuits/sec_1_04_02_lin_reg/python/sec_1_04_02.py",
+    "circuits/sec_1_04_04_lin_reg/python/sec_1_04_04.py",
 ]
 check_untyped_defs = true
 disallow_untyped_defs = true
