@@ -415,6 +415,105 @@ def part3(
     spi.print_section("Part 3 calculations", formatted_answer)
 
 
+def part4(
+    my_paths_dict: dict[str, Path],
+    my_netlists_dict: dict[str, spi.Netlist],
+    my_vectors_dict: dict[str, spi.Vectors],
+) -> dict[str, spi.Netlist]:
+    # Define analyses
+    list_of_analyses: list[spi.Analyses] = []  # start with an empty list
+    # 1st (and only) analysis: transient analysis
+    ac1 = spi.Analyses(
+        name="ac1",
+        cmd_type="ac",
+        cmd="ac dec 100 10m 100k",
+        vector=my_vectors_dict[Ky.VEC_OUT],
+        results_loc=my_paths_dict[Ky.RESULTS_PATH],
+    )
+    list_of_analyses.append(ac1)
+
+    # create control section
+    my_control = spi.Control()  # create 'my_control' object
+    for analysis in list_of_analyses:
+        my_control.insert_lines(analysis.lines_for_cntl())
+    my_netlists_dict[Ky.CONTROL4] = spi.Netlist(str(my_control))
+
+    # concatenate all tne netlists to make top1 and add to netlist dict
+    my_netlists_dict[Ky.TOP4] = (
+        my_netlists_dict[Ky.TITLE]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.DUT]
+        + my_netlists_dict[Ky.RC]
+        + my_netlists_dict[Ky.LOAD4]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.SUPPLIES]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.STIMULUS4]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.MODELS]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.CONTROL4]
+        + my_netlists_dict[Ky.END_LINE]
+    )
+    # write netlist to a file so ngspice can read it
+    top_filename: Path = my_paths_dict[Ky.NETLISTS_PATH] / "top4.cir"
+    my_netlists_dict[Ky.TOP4].write_to_file(top_filename)
+
+    # prepare simulate object, print out command, and simulate
+    sim: spi.Simulate = spi.Simulate(
+        ngspice_exe=my_paths_dict[Ky.NGSPICE_EXE],
+        netlist_filename=top_filename,
+        transcript_filename=my_paths_dict[Ky.SIM_TRANSCRIPT_FILENAME],
+        name="sim4",
+        timeout=20,
+    )
+    # spi.print_section("Ngspice Command", sim1) # print out command
+    sim.run()  # run the Ngspice simulation
+
+    # convert the raw results into list of SimResults objects
+    sim_results: list[spi.SimResults] = [
+        spi.SimResults.from_file(analysis.cmd_type, analysis.results_filename)
+        for analysis in list_of_analyses
+    ]
+    # get waveforms from sim_results
+    ac1_waves = spi.Waveforms(
+        sim_results[0].header, sim_results[0].data_plot, npts=1000000
+    )
+
+    # display results
+    plot_data = ac1_waves.x_axis_and_sigs(
+        my_vectors_dict[Ky.VEC_AC_OUT_GAIN].list_out()
+    )
+    y_names = my_vectors_dict[Ky.VEC_AC_OUT_GAIN].list_out()
+    my_plt = spi.Plot("ac_plt", plot_data, y_names, my_paths_dict[Ky.RESULTS_PATH])
+    my_plt.set_title("part 4 ac results")
+    my_plt.define_axes(("freq", "Hz", "log"), ("gain", "db", "linear"))
+    my_plt.png()  # create png file and send to results directory
+    spi.display_plots()
+
+    ac1_numpys: list[numpy_flt] = ac1_waves.x_axis_and_sigs(
+        my_vectors_dict[Ky.VEC_AC_OUT_GAIN].list_out()
+    )
+    fbegin, fmid, fend, npoints = (10e-3, 100, 100e3, 1000000)
+    my_meas: spi.StepInfo = spi.StepInfo(
+        ac1_numpys[0], ac1_numpys[1], fbegin, fend, npoints
+    )
+    zout_flow_db: float = my_meas.y_at_x(fbegin)
+    zout_100hz_db: float = my_meas.y_at_x(fmid)
+    zout_100hz: float = 10 ** (zout_100hz_db / 20)
+    zout_fhigh_db: float = my_meas.y_at_x(fend)
+    l_equivalent: float = zout_100hz / (2 * np.pi * fmid)
+
+    formatted_answer: str = f"Zout low freq: {zout_flow_db:.5g} dB\n"
+    formatted_answer += f"Zout 100Hz: {zout_100hz_db:.5g} dB\n"
+    formatted_answer += f"Zout 100Hz: {zout_100hz:.5g} ohms\n"
+    formatted_answer += f"Zout high freq: {zout_fhigh_db:.5g} dB\n"
+    formatted_answer += f"L_equivalent: {l_equivalent:.5g} henry"
+    spi.print_section("Part 4 calculations", formatted_answer)
+
+    return my_netlists_dict
+
+
 def main() -> None:
     # initialize paths, netlists, and vectors dictionaries
     paths_dict, netlists_dict, vectors_dict = initialize()
@@ -423,7 +522,7 @@ def main() -> None:
     part1(paths_dict, netlists_dict, vectors_dict)
     part2(paths_dict, netlists_dict, vectors_dict)
     part3(paths_dict, netlists_dict, vectors_dict)
-    # part4(paths_dict, netlists_dict, vectors_dict)
+    part4(paths_dict, netlists_dict, vectors_dict)
     # part5(paths_dict, netlists_dict, vectors_dict)
     # part6(paths_dict, netlists_dict, vectors_dict)
     # part7(paths_dict, netlists_dict, vectors_dict)
