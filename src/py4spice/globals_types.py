@@ -6,6 +6,7 @@ import numpy.typing as npt
 
 # Alias for type checking
 numpy_flt: TypeAlias = npt.NDArray[np.float64]
+
 AnaType: TypeAlias = Literal[
     "ac", "dc", "disto", "noise", "op", "pz", "sens", "sp", "tf", "tran"
 ]
