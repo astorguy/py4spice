@@ -326,6 +326,95 @@ def part2(
     spi.print_section("Part 2 calculations", formatted_answer)
 
 
+def part3(
+    my_paths_dict: dict[str, Path],
+    my_netlists_dict: dict[str, spi.Netlist],
+    my_vectors_dict: dict[str, spi.Vectors],
+) -> None:
+    # Define analyses
+    list_of_analyses: list[spi.Analyses] = []  # start with an empty list
+    # 1st (and only) analysis: transient analysis
+    tr1 = spi.Analyses(
+        name="tr1",
+        cmd_type="tran",
+        cmd="tran 1e-9 20e-6",
+        vector=my_vectors_dict[Ky.VEC_ALL],
+        results_loc=my_paths_dict[Ky.RESULTS_PATH],
+    )
+    list_of_analyses.append(tr1)
+
+    # create control section
+    my_control = spi.Control()  # create 'my_control' object
+    for analysis in list_of_analyses:
+        my_control.insert_lines(analysis.lines_for_cntl())
+    my_netlists_dict[Ky.CONTROL3] = spi.Netlist(str(my_control))
+
+    # concatenate all tne netlists to make top1 and add to netlist dict
+    my_netlists_dict[Ky.TOP3] = (
+        my_netlists_dict[Ky.TITLE]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.DUT]
+        + my_netlists_dict[Ky.LOAD3]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.SUPPLIES]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.STIMULUS3]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.MODELS]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.CONTROL3]
+        + my_netlists_dict[Ky.END_LINE]
+    )
+    # write netlist to a file so ngspice can read it
+    top_filename: Path = my_paths_dict[Ky.NETLISTS_PATH] / "top3.cir"
+    my_netlists_dict[Ky.TOP3].write_to_file(top_filename)
+
+    # prepare simulate object, print out command, and simulate
+    sim: spi.Simulate = spi.Simulate(
+        ngspice_exe=my_paths_dict[Ky.NGSPICE_EXE],
+        netlist_filename=top_filename,
+        transcript_filename=my_paths_dict[Ky.SIM_TRANSCRIPT_FILENAME],
+        name="sim3",
+        timeout=20,
+    )
+    # spi.print_section("Ngspice Command", sim1) # print out command
+    sim.run()  # run the Ngspice simulation
+
+    # convert the raw results into list of SimResults objects
+    sim_results: list[spi.SimResults] = [
+        spi.SimResults.from_file(analysis.cmd_type, analysis.results_filename)
+        for analysis in list_of_analyses
+    ]
+    # get waveforms from sim_results
+    tr1_waves = spi.Waveforms(sim_results[0].header, sim_results[0].data_plot)
+
+    tr1_waves.vec_subset(
+        my_vectors_dict[Ky.VEC_OUT].list_out()
+    )  # limit to just "out" signal
+    tr1_waves.x_range(9e-6, 12e-6)  # limit range to just step results
+
+    # display results
+    plot_data = tr1_waves.x_axis_and_sigs(my_vectors_dict[Ky.VEC_OUT].list_out())
+    y_names = my_vectors_dict[Ky.VEC_OUT].list_out()
+    my_plt = spi.Plot("tr_plt", plot_data, y_names, my_paths_dict[Ky.RESULTS_PATH])
+    my_plt.set_title("part 3 transient results")
+    my_plt.define_axes(("time", "sec", "linear"), ("voltage", "V", "linear"))
+    my_plt.png()  # create png file and send to results directory
+    spi.display_plots()
+
+    tr1_numpys: list[numpy_flt] = tr1_waves.x_axis_and_sigs(
+        my_vectors_dict[Ky.VEC_OUT].list_out()
+    )
+    my_meas: spi.StepInfo = spi.StepInfo(
+        tr1_numpys[0], tr1_numpys[1], 9e-6, 12e-6, 10000
+    )
+    vout_delta: float = my_meas.ydelta
+    iout_delta: float = 1 - 0.1
+    zout = abs(vout_delta / iout_delta)
+    formatted_answer: str = f"output impedance: {zout:.5g}"
+    spi.print_section("Part 3 calculations", formatted_answer)
+
+
 def main() -> None:
     # initialize paths, netlists, and vectors dictionaries
     paths_dict, netlists_dict, vectors_dict = initialize()
@@ -333,7 +422,7 @@ def main() -> None:
     # Execute all parts
     part1(paths_dict, netlists_dict, vectors_dict)
     part2(paths_dict, netlists_dict, vectors_dict)
-    # part3(paths_dict, netlists_dict, vectors_dict)
+    part3(paths_dict, netlists_dict, vectors_dict)
     # part4(paths_dict, netlists_dict, vectors_dict)
     # part5(paths_dict, netlists_dict, vectors_dict)
     # part6(paths_dict, netlists_dict, vectors_dict)
