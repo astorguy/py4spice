@@ -118,7 +118,7 @@ def create_pwr_png(
     my_vectors_dict: dict[str, spi.Vectors],
     my_paths_dict: dict[str, Path],
 ) -> None:
-    """Create and display power efficiency plot."""
+    """Create efficiency plot (png file)"""
 
     # create waveform object for dc1 results and calculate power efficiency
     pwr1 = spi.Waveforms(dc1_results.header, dc1_results.data_plot)
@@ -194,7 +194,7 @@ def part1(
     top_filename: Path = my_paths_dict[Ky.NETLISTS_PATH] / "top1.cir"
     my_netlists_dict[Ky.TOP1].write_to_file(top_filename)
 
-    # prepare simulate object, print out command, and simulate
+    # prepare simulate object and simulate
     sim: spi.Simulate = spi.Simulate(
         ngspice_exe=my_paths_dict[Ky.NGSPICE_EXE],
         netlist_filename=top_filename,
@@ -202,7 +202,6 @@ def part1(
         name="sim1",
         timeout=20,
     )
-    # spi.print_section("Ngspice Command", sim1) # print out command
     sim.run()  # run the Ngspice simulation
 
     # convert the raw results into list of SimResults objects
