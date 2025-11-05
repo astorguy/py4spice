@@ -32,6 +32,10 @@
         "editor.formatOnSave": true,
         "python.analysis.typeCheckingMode": "strict",
         "python.analysis.diagnosticMode": "workspace",
+        "python.analysis.exclude": [
+          "tests",
+          "src/py4spice_old"
+        ],
         "python.formatting.provider": "ruff",
         "python.linting.provider": "ruff",
         "workbench.colorTheme": "Cobalt2",
