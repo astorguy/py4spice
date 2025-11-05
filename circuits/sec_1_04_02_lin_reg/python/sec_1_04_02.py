@@ -9,7 +9,7 @@ PROJECT_SECTION = "SEC_1_04_02"
 
 class Ky:
     """Keys for dictionaries.  Defined here at top level so they can be
-    referenced instead of using strings for keys.
+    referenced instead of using strings for keys. (helps with autocomplete)
     """
 
     # Keys for decoding config file
@@ -111,6 +111,105 @@ def initialize() -> tuple[
         Ky.VEC_ETA: spi.Vectors("eta"),
     }
     return paths_dict, netlists_dict, vectors_dict
+
+
+def part1(
+    my_paths_dict: dict[str, Path],
+    my_netlists_dict: dict[str, spi.Netlist],
+    my_vectors_dict: dict[str, spi.Vectors],
+) -> dict[str, spi.Netlist]:
+    # Define analyses
+    list_of_analyses: list[spi.Analyses] = []  # start with an empty list
+
+    # 1st analysis: operating point
+    op1 = spi.Analyses(
+        name="op1",
+        cmd_type="op",
+        cmd="op",
+        vector=my_vectors_dict[Ky.VEC_ALL],
+        results_loc=my_paths_dict[Ky.RESULTS_PATH],
+    )
+    list_of_analyses.append(op1)
+
+    # 2nd analysis: dc transfer
+    dc1 = spi.Analyses(
+        name="dc1",
+        cmd_type="dc",
+        cmd="dc vin 6 17 0.1",
+        vector=my_vectors_dict[Ky.VEC_ALL],
+        results_loc=my_paths_dict[Ky.RESULTS_PATH],
+    )
+    list_of_analyses.append(dc1)
+
+    # create control section
+    my_control = spi.Control()  # create 'my_control' object
+    for analysis in list_of_analyses:
+        my_control.insert_lines(analysis.lines_for_cntl())
+    my_netlists_dict[Ky.CONTROL] = spi.Netlist(str(my_control))
+
+    # concatenate all tne netlists to make top1 and add to netlist dict
+    my_netlists_dict[Ky.TOP1] = (
+        my_netlists_dict[Ky.TITLE]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.DUT]
+        + my_netlists_dict[Ky.LOAD]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.SUPPLIES]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.STIMULUS]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.MODELS]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.CONTROL]
+        + my_netlists_dict[Ky.END_LINE]
+        + my_netlists_dict[Ky.BLANKLINE]
+    )
+    # write netlist to a file so ngspice can read it
+    top_filename: Path = my_paths_dict[Ky.NETLISTS_PATH] / "top1.cir"
+    my_netlists_dict[Ky.TOP1].write_to_file(top_filename)
+
+    # prepare simulate object, print out command, and simulate
+    sim: spi.Simulate = spi.Simulate(
+        ngspice_exe=my_paths_dict[Ky.NGSPICE_EXE],
+        netlist_filename=top_filename,
+        transcript_filename=my_paths_dict[Ky.SIM_TRANSCRIPT_FILENAME],
+        name="sim1",
+        timeout=20,
+    )
+    # spi.print_section("Ngspice Command", sim1) # print out command
+    sim.run()  # run the Ngspice simulation
+
+    # convert the raw results into list of SimResults objects
+    sim_results: list[spi.SimResults] = [
+        spi.SimResults.from_file(analysis.cmd_type, analysis.results_filename)
+        for analysis in list_of_analyses
+    ]
+
+    # give each SimResults object a more descriptive name
+    op1_results, dc1_results = sim_results
+
+    # diaplay results for operating point analysis
+    spi.print_section("Operating Point Results", op1_results.table_for_print())
+
+    # create waveform object for dc1 results and calculate power efficiency
+    pwr1 = spi.Waveforms(dc1_results.header, dc1_results.data_plot)
+    pwr1.vec_subset(my_vectors_dict[Ky.VEC_POWER_CALC].list_out())
+    pwr1.multiply("in", "vin#branch", "pin")  # calc input power
+    pwr1.multiply("out", "vmeas#branch", "pout")  # calc output power
+    pwr1.divide("pout", "pin", "eta_neg")  # calc efficiency
+    pwr1.scaler(-100, "eta_neg", "eta")  # make positive value & convert to %
+
+    # reduce waves to just "eta"
+    pwr1.vec_subset(my_vectors_dict[Ky.VEC_ETA].list_out())
+
+    # plot the efficiency vs. Vin
+    plot_data = pwr1.x_axis_and_sigs(my_vectors_dict[Ky.VEC_ETA].list_out())
+    y_names = my_vectors_dict[Ky.VEC_ETA].list_out()
+    my_plt = spi.Plot("my_plot", plot_data, y_names, my_paths_dict[Ky.RESULTS_PATH])
+    my_plt.set_title("Power Efficiency")
+    my_plt.define_axes(("Vin", "voltage", "linear"), ("efficiency", "%", "linear"))
+
+    return my_netlists_dict
 
 
 def main() -> None:
