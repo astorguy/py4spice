@@ -1,11 +1,13 @@
 """Signal measurements"""
 
-from typing import Any
+# from typing import cast
+from typing import cast, overload
 
 import numpy as np
+import numpy.typing as npt
 from scipy.interpolate import interp1d
 
-from .globals_types import numpy_flt
+numpy_flt = npt.NDArray[np.float64]
 
 
 class StepInfo:
@@ -29,11 +31,24 @@ class StepInfo:
         self.thres_hi = 0.9
         self.setting_err_percent = 0.02
 
-    def f_y(self, x_values) -> Any:
+    @overload
+    def f_y(self, x_values: float) -> np.float64: ...
+
+    @overload
+    def f_y(self, x_values: numpy_flt) -> numpy_flt: ...
+
+    def f_y(self, x_values: float | numpy_flt) -> np.float64 | numpy_flt:
         """Interpolate y value at a given x"""
         funct = interp1d(self.x_array_in, self.y_array_in, "linear")
-        return funct(x_values)
+        # return cast(float | numpy_flt, funct(x_values))
+        return cast(np.float64 | numpy_flt, funct(x_values))
 
+    # def f_y(self, x_values) -> Any:
+    #     """Interpolate y value at a given x"""
+    #     funct = interp1d(self.x_array_in, self.y_array_in, "linear")
+    #     return funct(x_values)
+
+    # def y_at_x(self, x_value: float) -> float:
     def y_at_x(self, x_value: float) -> float:
         """Return Y value for a X value"""
         return self.f_y(x_value)
@@ -111,16 +126,16 @@ class StepInfo:
         return self.xhi - self.xlo
 
     @property
-    def peak(self) -> float:
+    def peak(self) -> np.float64:
         """peak Y value"""
         index = np.argmax(self.y_array_lin)
-        return self.y_array_lin[index]
+        return cast(np.float64, self.y_array_lin[index])
 
     @property
-    def peaktime(self) -> float:
+    def peaktime(self) -> np.float64:
         """X value at peak"""
         index = np.argmax(self.y_array_lin)
-        return self.x_array_lin[index]
+        return cast(np.float64, self.x_array_lin[index])
 
     @property
     def xinit(self) -> float:

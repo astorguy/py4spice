@@ -40,13 +40,14 @@ files = [
     "src/py4spice/print_section.py",
     "src/py4spice/sim_results.py",
     "src/py4spice/simulate.py",
-    # "src/py4spice/step_info.py",
+    "src/py4spice/step_info.py",
     "src/py4spice/vectors.py",
     "src/py4spice/waveforms.py",
 ]
 check_untyped_defs = true
 disallow_untyped_defs = true
 strict = true
+disable_error_code = "unused-ignore"
 warn_unused_ignores = true
 warn_return_any = true
 
