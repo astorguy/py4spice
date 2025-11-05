@@ -1,13 +1,14 @@
-"""Line plot multiple pd.DataFrame results from simulation
-"""
+"""Line plot multiple pd.DataFrame results from simulation"""
+
 from pathlib import Path
-from typing import Optional, Literal
+from typing import Literal, Optional
+
 import matplotlib.figure as fig
 import matplotlib.pyplot as plt
-from matplotlib.axes import Axes
 from cycler import cycler
-from .globals_types import numpy_flt
+from matplotlib.axes import Axes
 
+from .globals_types import numpy_flt
 
 # type aliases
 Scale = Literal["linear", "log"]
@@ -67,13 +68,13 @@ def create_plot(
     # set style to look like an oscilloscope
     oscilloscope_colors()
 
-    fig_axe: tuple[fig.Figure, Axes] = plt.subplots(figsize=FIG_SIZE)
+    fig_axe: tuple[fig.Figure, Axes] = plt.subplots(figsize=FIG_SIZE)  # type: ignore
     axe: Axes = fig_axe[1]
 
     for index, y_array in enumerate(y_data):
-        axe.plot(x_data, y_array, label=y_names[index])
+        axe.plot(x_data, y_array, label=y_names[index])  # type: ignore
 
-    plt.legend(title="Signals:")
+    plt.legend(title="Signals:")  # type: ignore
 
     return fig_axe
 
@@ -100,7 +101,7 @@ class Plot:
 
     def set_title(self, title: str) -> None:
         """title for plot"""
-        self.axe.set_title(title)
+        self.axe.set_title(title) # type: ignore
 
     def define_axes(
         self, x_info: tuple[str, str, Scale], y_info: tuple[str, str, Scale]
@@ -122,10 +123,10 @@ class Plot:
         if y_scale not in ["linear", "log"]:
             y_scale = "linear"
 
-        self.axe.set_xlabel(f"{x_measure} ({x_units})")
-        self.axe.set_ylabel(f"{y_measure} ({y_units})")
-        self.axe.set_xscale(x_scale)
-        self.axe.set_yscale(y_scale)
+        self.axe.set_xlabel(f"{x_measure} ({x_units})") # type: ignore
+        self.axe.set_ylabel(f"{y_measure} ({y_units})") # type: ignore
+        self.axe.set_xscale(x_scale) # type: ignore
+        self.axe.set_yscale(y_scale) # type: ignore
 
     def zoom(
         self,
@@ -148,7 +149,7 @@ class Plot:
     def png(self) -> None:
         """Create a png of the plot and store in the "results_loc" dir"""
         plot_filename: Path = self.results_path / f"{self.name}.png"
-        self.fig.savefig(str(plot_filename))
+        self.fig.savefig(str(plot_filename)) # type: ignore
 
 
 def display_plots() -> None:
@@ -156,4 +157,4 @@ def display_plots() -> None:
     Display all plots to screen. These displays are different
     from the png's which are saved with a different method.
     """
-    plt.show()
+    plt.show() # type: ignore
