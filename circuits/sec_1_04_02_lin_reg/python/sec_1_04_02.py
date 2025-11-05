@@ -114,11 +114,23 @@ def initialize() -> tuple[
 
 
 def create_pwr_png(
-    pwr1: spi.Waveforms,
+    dc1_results: spi.SimResults,
     my_vectors_dict: dict[str, spi.Vectors],
     my_paths_dict: dict[str, Path],
 ) -> None:
     """Create and display power efficiency plot."""
+
+    # create waveform object for dc1 results and calculate power efficiency
+    pwr1 = spi.Waveforms(dc1_results.header, dc1_results.data_plot)
+    pwr1.vec_subset(my_vectors_dict[Ky.VEC_POWER_CALC].list_out())
+    pwr1.multiply("in", "vin#branch", "pin")  # calc input power
+    pwr1.multiply("out", "vmeas#branch", "pout")  # calc output power
+    pwr1.divide("pout", "pin", "eta_neg")  # calc efficiency
+    pwr1.scaler(-100, "eta_neg", "eta")  # make positive value & convert to %
+
+    # reduce waves to just "eta"
+    pwr1.vec_subset(my_vectors_dict[Ky.VEC_ETA].list_out())
+
     plot_data = pwr1.x_axis_and_sigs(my_vectors_dict[Ky.VEC_ETA].list_out())
     y_names = my_vectors_dict[Ky.VEC_ETA].list_out()
     my_plt = spi.Plot("my_plot", plot_data, y_names, my_paths_dict[Ky.RESULTS_PATH])
@@ -205,19 +217,8 @@ def part1(
     # diaplay results for operating point analysis
     spi.print_section("Operating Point Results", op1_results.table_for_print())
 
-    # create waveform object for dc1 results and calculate power efficiency
-    pwr1 = spi.Waveforms(dc1_results.header, dc1_results.data_plot)
-    pwr1.vec_subset(my_vectors_dict[Ky.VEC_POWER_CALC].list_out())
-    pwr1.multiply("in", "vin#branch", "pin")  # calc input power
-    pwr1.multiply("out", "vmeas#branch", "pout")  # calc output power
-    pwr1.divide("pout", "pin", "eta_neg")  # calc efficiency
-    pwr1.scaler(-100, "eta_neg", "eta")  # make positive value & convert to %
-
-    # reduce waves to just "eta"
-    pwr1.vec_subset(my_vectors_dict[Ky.VEC_ETA].list_out())
-
     # create png file for the efficiency vs. Vin
-    create_pwr_png(pwr1, my_vectors_dict, my_paths_dict)
+    create_pwr_png(dc1_results, my_vectors_dict, my_paths_dict)
 
     return my_netlists_dict
 
