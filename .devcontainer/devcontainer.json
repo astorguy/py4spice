@@ -32,9 +32,9 @@
         "editor.formatOnSave": true,
         "python.analysis.typeCheckingMode": "strict",
         "python.analysis.diagnosticMode": "workspace",
-        "python.analysis.exclude": [
-          "tests",
-          "src/py4spice_old"
+        "python.analysis.include": [
+          "circuits",
+          "src/py4spice"
         ],
         "python.formatting.provider": "ruff",
         "python.linting.provider": "ruff",
