@@ -1,7 +1,12 @@
 import tomllib
 from pathlib import Path
 
+import numpy as np
+import numpy.typing as npt
+
 import py4spice as spi
+
+numpy_flt = npt.NDArray[np.float64]
 
 CONFIG_FILENAME = Path("/workspaces/py4spice/circuits/config.toml")
 PROJECT_SECTION = "SEC_1_04_04"
@@ -232,13 +237,102 @@ def part1(
     )
 
 
+def part2(
+    my_paths_dict: dict[str, Path],
+    my_netlists_dict: dict[str, spi.Netlist],
+    my_vectors_dict: dict[str, spi.Vectors],
+) -> None:
+    # Define analyses
+    list_of_analyses: list[spi.Analyses] = []  # start with an empty list
+
+    # 1st (and only) analysis: transient analysis
+    tr1 = spi.Analyses(
+        name="tr1",
+        cmd_type="tran",
+        cmd="tran 1e-9 20e-6",
+        vector=my_vectors_dict[Ky.VEC_ALL],
+        results_loc=my_paths_dict[Ky.RESULTS_PATH],
+    )
+    list_of_analyses.append(tr1)
+
+    # create control section
+    my_control = spi.Control()  # create 'my_control' object
+    for analysis in list_of_analyses:
+        my_control.insert_lines(analysis.lines_for_cntl())
+    my_netlists_dict[Ky.CONTROL2] = spi.Netlist(str(my_control))
+
+    # concatenate all tne netlists to make top1 and add to netlist dict
+    my_netlists_dict[Ky.TOP2] = (
+        my_netlists_dict[Ky.TITLE]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.DUT]
+        + my_netlists_dict[Ky.LOAD2]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.SUPPLIES]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.STIMULUS2]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.MODELS]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.CONTROL2]
+        + my_netlists_dict[Ky.END_LINE]
+        + my_netlists_dict[Ky.BLANKLINE]
+    )
+
+    # write netlist to a file so ngspice can read it
+    top_filename: Path = my_paths_dict[Ky.NETLISTS_PATH] / "top2.cir"
+    my_netlists_dict[Ky.TOP2].write_to_file(top_filename)
+
+    # prepare simulate object and simulate
+    sim: spi.Simulate = spi.Simulate(
+        ngspice_exe=my_paths_dict[Ky.NGSPICE_EXE],
+        netlist_filename=top_filename,
+        transcript_filename=my_paths_dict[Ky.SIM_TRANSCRIPT_FILENAME],
+        name="sim2",
+        timeout=20,
+    )
+    sim.run()  # run the Ngspice simulation
+
+    # convert the raw results into list of SimResults objects
+    sim_results: list[spi.SimResults] = [
+        spi.SimResults.from_file(analysis.cmd_type, analysis.results_filename)
+        for analysis in list_of_analyses
+    ]
+    # get waveforms from sim_results
+    tr1 = spi.Waveforms(sim_results[0].header, sim_results[0].data_plot)
+
+    # limit to just "out" signal
+    tr1.vec_subset(my_vectors_dict[Ky.VEC_OUT].list_out())
+    tr1.x_range(9e-6, 12e-6)  # limit range to just step results
+
+    # display results
+    plot_data = tr1.x_axis_and_sigs(my_vectors_dict[Ky.VEC_OUT].list_out())
+    y_names = my_vectors_dict[Ky.VEC_OUT].list_out()
+    my_plt = spi.Plot("tr_plt", plot_data, y_names, my_paths_dict[Ky.RESULTS_PATH])
+    my_plt.set_title("part 2 transient results")
+    my_plt.define_axes(("time", "sec", "linear"), ("voltage", "V", "linear"))
+    my_plt.png()  # create png file and send to results directory
+
+    tr1_numpys: list[numpy_flt] = tr1.x_axis_and_sigs(
+        my_vectors_dict[Ky.VEC_OUT].list_out()
+    )
+    my_meas: spi.StepInfo = spi.StepInfo(
+        tr1_numpys[0], tr1_numpys[1], 9e-6, 12e-6, 10000
+    )
+    vin_delta: float = 500.0 - 15.0
+    vout_delta: float = my_meas.ydelta
+    a_s_ol: float = vout_delta / vin_delta
+    formatted_answer: str = f"Open loop gain (DC audio susceptibility): {a_s_ol:.3g}"
+    spi.print_section("Part 2 calculations", formatted_answer)
+
+
 def main() -> None:
     # initialize paths, netlists, and vectors dictionaries
     paths_dict, netlists_dict, vectors_dict = initialize()
 
     # Execute all parts
     part1(paths_dict, netlists_dict, vectors_dict)
-    # part2(paths_dict, netlists_dict, vectors_dict)
+    part2(paths_dict, netlists_dict, vectors_dict)
     # part3(paths_dict, netlists_dict, vectors_dict)
     # part4(paths_dict, netlists_dict, vectors_dict)
     # part5(paths_dict, netlists_dict, vectors_dict)
