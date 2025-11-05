@@ -299,21 +299,21 @@ def part2(
         for analysis in list_of_analyses
     ]
     # get waveforms from sim_results
-    tr1 = spi.Waveforms(sim_results[0].header, sim_results[0].data_plot)
+    tr1_waves = spi.Waveforms(sim_results[0].header, sim_results[0].data_plot)
 
     # limit to just "out" signal
-    tr1.vec_subset(my_vectors_dict[Ky.VEC_OUT].list_out())
-    tr1.x_range(9e-6, 12e-6)  # limit range to just step results
+    tr1_waves.vec_subset(my_vectors_dict[Ky.VEC_OUT].list_out())
+    tr1_waves.x_range(9e-6, 12e-6)  # limit range to just step results
 
     # display results
-    plot_data = tr1.x_axis_and_sigs(my_vectors_dict[Ky.VEC_OUT].list_out())
+    plot_data = tr1_waves.x_axis_and_sigs(my_vectors_dict[Ky.VEC_OUT].list_out())
     y_names = my_vectors_dict[Ky.VEC_OUT].list_out()
     my_plt = spi.Plot("tr_plt", plot_data, y_names, my_paths_dict[Ky.RESULTS_PATH])
     my_plt.set_title("part 2 transient results")
     my_plt.define_axes(("time", "sec", "linear"), ("voltage", "V", "linear"))
     my_plt.png()  # create png file and send to results directory
 
-    tr1_numpys: list[numpy_flt] = tr1.x_axis_and_sigs(
+    tr1_numpys: list[numpy_flt] = tr1_waves.x_axis_and_sigs(
         my_vectors_dict[Ky.VEC_OUT].list_out()
     )
     my_meas: spi.StepInfo = spi.StepInfo(
