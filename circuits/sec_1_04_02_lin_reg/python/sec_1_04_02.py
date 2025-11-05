@@ -88,7 +88,7 @@ def initialize() -> tuple[
     netlists_dict: dict[str, spi.Netlist] = {}  # create empty netlist dictionary
 
     netlists_dict[Ky.BLANKLINE] = spi.Netlist("")  # blank line for spacing
-    netlists_dict[Ky.TITLE] = spi.Netlist("* Title line")  # title line
+    netlists_dict[Ky.TITLE] = spi.Netlist("* linear regulator section 1.4.2")
     netlists_dict[Ky.END_LINE] = spi.Netlist(".end")  # end statement
 
     # create netlist objects from files and add to netlist dictionary
