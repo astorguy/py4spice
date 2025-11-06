@@ -2,7 +2,7 @@
 Lightweight Python package interface to Ngspice
 
 ## Motivation
-[Ngspice](https://ngspice.sourceforge.io/) is an open source electrical circuit simulator. It typically executes in batch mode using an archaic script interface. The ***Python-for-Spice*** package facilitates Ngspice interaction using Python scripts. Its simple classes and functions generate a Ngspice netlist. You can launch multiple analyses and convert the results to [NumPy](https://numpy.org/) arrays, enabling downstream computation or plotting with [Matplotlib](https://matplotlib.org/).
+[Ngspice](https://ngspice.sourceforge.io/) is an open source electrical circuit simulator. It typically executes in batch mode using an archaic script interface. The ***Python-for-Spice*** package facilitates Ngspice interaction using Python scripts. You can launch multiple analyses and convert the results to [NumPy](https://numpy.org/) arrays, enabling downstream computation or plotting with [Matplotlib](https://matplotlib.org/). The motivation for Python-for-Spice is to access Ngspice from within a Python script, enabling advanced analysis of electrical circuits.
 
 A modest knowledge of Ngspice and Python is required.
 
@@ -13,7 +13,7 @@ SPICE – 50 Years and One Billion Transistors Later](https://youtu.be/TQ8cJ9-Gy
 Ngspice is the today's open source version of the original SPICE. It's the simulation engine of several electronic design automation (EDA) programs. Knowledge of Ngspice gives you solid understanding of all SPICE derivatives.
 
 ## Typical Python Script Flow
-The Python-for-Spice modules are used to help you control Ngspice with a Python script. The flow of the script will likely follow a simple three-stage structure:
+The Python-for-Spice modules help you control Ngspice with a Python script. The flow of the script will likely follow a simple three-stage structure:
 1. Prepare the input file (*netlist*) required for simulation
 1. Execute Ngspice simulation(s)
 1. Convert the simulation results to dictionaries or NumPy arrays
@@ -26,10 +26,13 @@ Developed in 1971, long before modern operating systems, interaction with SPICE 
 * semiconductor *model* definitions
 * other miscellaneous settings
 
-Python-for-Spice classes and functions facilitate construction of the input netlist. It gathers, creates, and concatenates the content for the single netlist necessary for execution. Simulation is controlled by using the *control section* feature of SPICE/Ngspice.
+Python-for-Spice facilitates construction of the input netlist. It gathers, creates, and concatenates the content for the single netlist necessary for execution. Simulation is controlled by using the *control section* feature of Ngspice.
 
 ## Ngspice API
-Ngspice has an API, which is used by most EDA tools for integration. The Python-for-Spice offers an alternative method to run Ngspice without the complexity of the API.
+Ngspice has an API which is used by most EDA tools for integration. The Python-for-Spice offers an alternative method to run Ngspice without the complexity of the API.
+
+## Schematic Capture
+Python-for-Spice starts with netlists for the circuit descriptions. Most schematic capture programs can generate SPICE netlists.
 
 ## Getting Started
-You can learn how to use Python-for-Spice by investigating the examples in [circuits](https://github.com/astorguy/py4spice/tree/main/circuits).
+You can learn how to use Python-for-Spice by investigating the examples in [circuits](https://github.com/astorguy/py4spice/tree/main/circuits). This repository is set up for using codespaces.
