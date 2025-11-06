@@ -7,5 +7,15 @@ Lightweight Python package interface to Ngspice
 A modest knowledge of Ngspice and Python is required.
 
 # SPICE and Ngspice
-SPICE (Simulation Program with Integrated Circuit Emphasis) is one the most important software tools in the history of Silicon Valley. Originally released to the public in 1971, it can be argued that it is the oldest open source software still in use today. It is the root of a broad tree of commercial circuit simulators (i.e. [HSPICE®](https://www.synopsys.com/implementation-and-signoff/ams-simulation/primesim-hspice.html), [PSPICE®](https://www.cadence.com/en_US/home/tools/pcb-design-and-analysis/analog-mixed-signal-simulation/pspice.html), [Spectre®](https://www.cadence.com/en_US/home/tools/custom-ic-analog-rf-design/circuit-simulation.html), [LTSpice®](https://www.analog.com/en/resources/design-tools-and-calculators/ltspice-simulator.html#learn), [QSPICE®](https://www.qorvo.com/design-hub/design-tools/interactive/qspice)). Ngspice is the today's open source of the original SPICE. It is the simulation engine integrated into many electrical CAD programs (i.e.). Knowledge of Nspice will give you proficency in all commercial circuit simulators.
+SPICE (Simulation Program with Integrated Circuit Emphasis) is one the most important software tools in the history of Silicon Valley. Originally released to the public in 1971, it can be argued that it is the oldest open source software still in use today. It is the trunk of a broad tree of commercial circuit simulators (i.e. [HSPICE®](https://www.synopsys.com/implementation-and-signoff/ams-simulation/primesim-hspice.html), [PSPICE®](https://www.cadence.com/en_US/home/tools/pcb-design-and-analysis/analog-mixed-signal-simulation/pspice.html), [Spectre®](https://www.cadence.com/en_US/home/tools/custom-ic-analog-rf-design/circuit-simulation.html), [LTSpice®](https://www.analog.com/en/resources/design-tools-and-calculators/ltspice-simulator.html#learn), [QSPICE®](https://www.qorvo.com/design-hub/design-tools/interactive/qspice)). If you want to learn more about the history of SPICE, check out these lectures by original developers on YouTube: [The Life of SPICE](https://youtu.be/IkOb19FwgqY?si=HcTpD8ZNeK7JugDG), [
+SPICE – 50 Years and One Billion Transistors Later](https://youtu.be/TQ8cJ9-GyGo?si=HEkz3La0uFJiHW9V).
+
+Ngspice is the today's open source of the original SPICE. It's the simulation engine of several electronic design automation (EDA) programs. Knowledge of Ngspice gives you solid understanding of all SPICE derivatives.
+
+# Typical Python Script Flow
+The ***Python for Spice*** modules are used to help you control Ngspice with your main Python script. The flow of the program will likely follow a simple three-stage structure:
+1. Prepare the files necessary for simulation
+1. Execute Ngspice simulation(s)
+1. Convert the simulation results to dictionaries or numpy arrays
+
 
