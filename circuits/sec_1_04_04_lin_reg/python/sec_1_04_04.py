@@ -308,7 +308,9 @@ def part2(
     # display results
     plot_data = tr1_waves.x_axis_and_sigs(my_vectors_dict[Ky.VEC_OUT].list_out())
     y_names = my_vectors_dict[Ky.VEC_OUT].list_out()
-    my_plt = spi.Plot("tr_plt", plot_data, y_names, my_paths_dict[Ky.RESULTS_PATH])
+    my_plt = spi.Plot(
+        "tr_plt_part2", plot_data, y_names, my_paths_dict[Ky.RESULTS_PATH]
+    )
     my_plt.set_title("part 2 transient results")
     my_plt.define_axes(("time", "sec", "linear"), ("voltage", "V", "linear"))
     my_plt.png()  # create png file and send to results directory
@@ -396,7 +398,9 @@ def part3(
     # display results
     plot_data = tr1_waves.x_axis_and_sigs(my_vectors_dict[Ky.VEC_OUT].list_out())
     y_names = my_vectors_dict[Ky.VEC_OUT].list_out()
-    my_plt = spi.Plot("tr_plt", plot_data, y_names, my_paths_dict[Ky.RESULTS_PATH])
+    my_plt = spi.Plot(
+        "tr_plt_part3", plot_data, y_names, my_paths_dict[Ky.RESULTS_PATH]
+    )
     my_plt.set_title("part 3 transient results")
     my_plt.define_axes(("time", "sec", "linear"), ("voltage", "V", "linear"))
     my_plt.png()  # create png file and send to results directory
@@ -485,7 +489,9 @@ def part4(
         my_vectors_dict[Ky.VEC_AC_OUT_GAIN].list_out()
     )
     y_names = my_vectors_dict[Ky.VEC_AC_OUT_GAIN].list_out()
-    my_plt = spi.Plot("ac_plt", plot_data, y_names, my_paths_dict[Ky.RESULTS_PATH])
+    my_plt = spi.Plot(
+        "ac_plt_part4", plot_data, y_names, my_paths_dict[Ky.RESULTS_PATH]
+    )
     my_plt.set_title("part 4 ac results")
     my_plt.define_axes(("freq", "Hz", "log"), ("gain", "db", "linear"))
     my_plt.png()  # create png file and send to results directory
@@ -514,6 +520,305 @@ def part4(
     return my_netlists_dict
 
 
+def part5(
+    my_paths_dict: dict[str, Path],
+    my_netlists_dict: dict[str, spi.Netlist],
+    my_vectors_dict: dict[str, spi.Vectors],
+) -> dict[str, spi.Netlist]:
+    # Define analyses
+    list_of_analyses: list[spi.Analyses] = []  # start with an empty list
+    # 1st (and only) analysis: transient analysis
+    ac1 = spi.Analyses(
+        name="ac1",
+        cmd_type="ac",
+        cmd="ac dec 100 10m 100k",
+        vector=my_vectors_dict[Ky.VEC_OUT],
+        results_loc=my_paths_dict[Ky.RESULTS_PATH],
+    )
+    list_of_analyses.append(ac1)
+
+    # create control section
+    my_control = spi.Control()  # create 'my_control' object
+    for analysis in list_of_analyses:
+        my_control.insert_lines(analysis.lines_for_cntl())
+    my_netlists_dict[Ky.CONTROL5] = spi.Netlist(str(my_control))
+
+    # concatenate all tne netlists to make top1 and add to netlist dict
+    my_netlists_dict[Ky.TOP5] = (
+        my_netlists_dict[Ky.TITLE]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.DUT]
+        + my_netlists_dict[Ky.RC]
+        + my_netlists_dict[Ky.COUT]
+        + my_netlists_dict[Ky.LOAD5]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.SUPPLIES]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.STIMULUS5]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.MODELS]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.CONTROL5]
+        + my_netlists_dict[Ky.END_LINE]
+    )
+    # write netlist to a file so ngspice can read it
+    top_filename: Path = my_paths_dict[Ky.NETLISTS_PATH] / "top5.cir"
+    my_netlists_dict[Ky.TOP5].write_to_file(top_filename)
+
+    # prepare simulate object, print out command, and simulate
+    sim: spi.Simulate = spi.Simulate(
+        ngspice_exe=my_paths_dict[Ky.NGSPICE_EXE],
+        netlist_filename=top_filename,
+        transcript_filename=my_paths_dict[Ky.SIM_TRANSCRIPT_FILENAME],
+        name="sim5",
+        timeout=20,
+    )
+    # spi.print_section("Ngspice Command", sim1) # print out command
+    sim.run()  # run the Ngspice simulation
+
+    # convert the raw results into list of SimResults objects
+    sim_results: list[spi.SimResults] = [
+        spi.SimResults.from_file(analysis.cmd_type, analysis.results_filename)
+        for analysis in list_of_analyses
+    ]
+    # get waveforms from sim_results
+    ac1_waves = spi.Waveforms(
+        sim_results[0].header, sim_results[0].data_plot, npts=1000000
+    )
+
+    # display results
+    plot_data = ac1_waves.x_axis_and_sigs(
+        my_vectors_dict[Ky.VEC_AC_OUT_GAIN].list_out()
+    )
+    y_names = my_vectors_dict[Ky.VEC_AC_OUT_GAIN].list_out()
+    my_plt = spi.Plot(
+        "ac_plt_part5", plot_data, y_names, my_paths_dict[Ky.RESULTS_PATH]
+    )
+    my_plt.set_title("part 5 ac results")
+    my_plt.define_axes(("freq", "Hz", "log"), ("gain", "db", "linear"))
+    my_plt.png()  # create png file and send to results directory
+    spi.display_plots()
+
+    ac1_numpys: list[numpy_flt] = ac1_waves.x_axis_and_sigs(
+        my_vectors_dict[Ky.VEC_AC_OUT_GAIN].list_out()
+    )
+    fbegin, fend, npoints = (10e-3, 10e3, 1000000)
+    my_meas: spi.StepInfo = spi.StepInfo(
+        ac1_numpys[0], ac1_numpys[1], fbegin, fend, npoints
+    )
+
+    f_peak: float = my_meas.peaktime
+    formatted_answer: str = f"freq at peak gain: {f_peak:.5g} Hz"
+    spi.print_section("Part 5 calculations", formatted_answer)
+
+    return my_netlists_dict
+
+
+def run_sim_part6(
+    my_netlists_dict: dict[str, spi.Netlist],
+    my_paths_dict: dict[str, Path],
+    my_list_analyses: list[spi.Analyses],
+    cf: float,
+) -> tuple[dict[str, spi.Netlist], spi.Waveforms]:
+    my_netlists_dict[Ky.CF] = spi.Netlist(f"CF rc div {cf}")
+
+    my_netlists_dict[Ky.TOP6] = (
+        my_netlists_dict[Ky.TITLE]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.DUT]
+        + my_netlists_dict[Ky.RF]
+        + my_netlists_dict[Ky.CF]
+        + my_netlists_dict[Ky.LOAD6]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.SUPPLIES]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.STIMULUS6]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.MODELS]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.CONTROL6]
+        + my_netlists_dict[Ky.END_LINE]
+    )
+    # write netlist to a file so ngspice can read it
+    top_filename: Path = my_paths_dict[Ky.NETLISTS_PATH] / "top6.cir"
+    my_netlists_dict[Ky.TOP6].write_to_file(top_filename)
+
+    # prepare simulate object, print out command, and simulate
+    sim: spi.Simulate = spi.Simulate(
+        ngspice_exe=my_paths_dict[Ky.NGSPICE_EXE],
+        netlist_filename=top_filename,
+        transcript_filename=my_paths_dict[Ky.SIM_TRANSCRIPT_FILENAME],
+        name="sim6",
+        timeout=20,
+    )
+    # spi.print_section("Ngspice Command", sim1) # print out command
+    sim.run()  # run the Ngspice simulation
+
+    # convert the raw results into list of SimResults objects
+    sim_results: list[spi.SimResults] = [
+        spi.SimResults.from_file(analysis.cmd_type, analysis.results_filename)
+        for analysis in my_list_analyses
+    ]
+    # get waveforms from sim_results
+    tr1 = spi.Waveforms(sim_results[0].header, sim_results[0].data_plot)
+
+    return my_netlists_dict, tr1
+
+
+def part6(
+    my_paths_dict: dict[str, Path],
+    my_netlists_dict: dict[str, spi.Netlist],
+    my_vectors_dict: dict[str, spi.Vectors],
+) -> None:
+    # Define analyses
+    list_of_analyses: list[spi.Analyses] = []  # start with an empty list
+    # 1st (and only) analysis: transient analysis
+    ac1 = spi.Analyses(
+        name="tr1",
+        cmd_type="tran",
+        cmd="tran 0.1u 1m",
+        vector=my_vectors_dict[Ky.VEC_OUT],
+        results_loc=my_paths_dict[Ky.RESULTS_PATH],
+    )
+    list_of_analyses.append(ac1)
+
+    # create control section
+    my_control = spi.Control()  # create 'my_control' object
+    for analysis in list_of_analyses:
+        my_control.insert_lines(analysis.lines_for_cntl())
+    my_netlists_dict[Ky.CONTROL6] = spi.Netlist(str(my_control))
+
+    my_netlists_dict[Ky.RF] = spi.Netlist("RF rc beta 100")
+
+    # run simulation for different values of CF
+    cf_values = [1e-9, 10e-9, 47e-9, 100e-9]  # try different values of CF
+    waves: list[spi.Waveforms] = []
+    for cf in cf_values:
+        my_netlists_dict, wave = run_sim_part6(
+            my_netlists_dict, my_paths_dict, list_of_analyses, cf
+        )
+        waves.append(wave)
+
+    # first waveform in list has the x-axis array
+    plot_data = waves[0].x_axis_and_sigs(my_vectors_dict[Ky.VEC_OUT].list_out())
+    for wave in waves[1:]:  # strip off x-axis array and combine
+        plot_data.extend(
+            wave.x_axis_and_sigs(my_vectors_dict[Ky.VEC_OUT].list_out())[1:]
+        )
+
+    # create labels for each waveform
+    y_names = [f"CF = {cf}" for cf in cf_values]
+
+    my_plt = spi.Plot(
+        "tr_plt_part6", plot_data, y_names, my_paths_dict[Ky.RESULTS_PATH]
+    )
+    my_plt.set_title("part 6 transient results")
+    my_plt.define_axes(("time", "sec", "linear"), ("voltage", "V", "linear"))
+    my_plt.png()  # create png file and send to results directory
+    spi.display_plots()
+
+    wave1_numpys: list[numpy_flt] = waves[3].x_axis_and_sigs(
+        my_vectors_dict[Ky.VEC_OUT].list_out()
+    )
+    tbegin, tend, npoints = (0, 1e-3, 1000)
+    my_meas: spi.StepInfo = spi.StepInfo(
+        wave1_numpys[0], wave1_numpys[1], tbegin, tend, npoints
+    )
+    vout_max: float = my_meas.peak
+    vout_pos_spike: float = vout_max - 5.0
+    formatted_answer: str = f"vout spike: {vout_pos_spike:.5g} V"
+    spi.print_section("Part 6 calculations", formatted_answer)
+
+
+def part7(
+    my_paths_dict: dict[str, Path],
+    my_netlists_dict: dict[str, spi.Netlist],
+    my_vectors_dict: dict[str, spi.Vectors],
+) -> None:
+    # Define analyses
+    list_of_analyses: list[spi.Analyses] = []  # start with an empty list
+    # 1st (and only) analysis: transient analysis
+    tr1 = spi.Analyses(
+        name="tr1",
+        cmd_type="tran",
+        cmd="tran 0.1u 1m",
+        vector=my_vectors_dict[Ky.VEC_OUT],
+        results_loc=my_paths_dict[Ky.RESULTS_PATH],
+    )
+    list_of_analyses.append(tr1)
+
+    # create control section
+    my_control = spi.Control()  # create 'my_control' object
+    for analysis in list_of_analyses:
+        my_control.insert_lines(analysis.lines_for_cntl())
+    my_netlists_dict[Ky.CONTROL7] = spi.Netlist(str(my_control))
+
+    # create comp network with rf = 470k and cf shorted
+    my_netlists_dict[Ky.RF_470K] = spi.Netlist("RF beta div 470k")
+
+    # concatenate all tne netlists to make top1 and add to netlist dict
+    my_netlists_dict[Ky.TOP7] = (
+        my_netlists_dict[Ky.TITLE]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.DUT]
+        + my_netlists_dict[Ky.RF_470K]
+        + my_netlists_dict[Ky.LOAD7]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.SUPPLIES]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.STIMULUS7]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.MODELS]
+        + my_netlists_dict[Ky.BLANKLINE]
+        + my_netlists_dict[Ky.CONTROL7]
+        + my_netlists_dict[Ky.END_LINE]
+    )
+    # write netlist to a file so ngspice can read it
+    top_filename: Path = my_paths_dict[Ky.NETLISTS_PATH] / "top7.cir"
+    my_netlists_dict[Ky.TOP7].write_to_file(top_filename)
+
+    # prepare simulate object, print out command, and simulate
+    sim: spi.Simulate = spi.Simulate(
+        ngspice_exe=my_paths_dict[Ky.NGSPICE_EXE],
+        netlist_filename=top_filename,
+        transcript_filename=my_paths_dict[Ky.SIM_TRANSCRIPT_FILENAME],
+        name="sim7",
+        timeout=20,
+    )
+    # spi.print_section("Ngspice Command", sim1) # print out command
+    sim.run()  # run the Ngspice simulation
+
+    # convert the raw results into list of SimResults objects
+    sim_results: list[spi.SimResults] = [
+        spi.SimResults.from_file(analysis.cmd_type, analysis.results_filename)
+        for analysis in list_of_analyses
+    ]
+    # get waveforms from sim_results
+    tr1_waves = spi.Waveforms(sim_results[0].header, sim_results[0].data_plot)
+
+    # display results
+    plot_data = tr1_waves.x_axis_and_sigs(my_vectors_dict[Ky.VEC_OUT].list_out())
+    y_names = my_vectors_dict[Ky.VEC_OUT].list_out()
+    my_plt = spi.Plot(
+        "tr_plt_part7", plot_data, y_names, my_paths_dict[Ky.RESULTS_PATH]
+    )
+    my_plt.set_title("part 7 transient results")
+    my_plt.define_axes(("time", "sec", "linear"), ("voltage", "V", "linear"))
+    my_plt.png()  # create png file and send to results directory
+    spi.display_plots()
+
+    tr1_numpys: list[numpy_flt] = tr1_waves.x_axis_and_sigs(
+        my_vectors_dict[Ky.VEC_OUT].list_out()
+    )
+    tbegin, tend, npoints = (50e-6, 150e-6, 1000)
+    my_meas: spi.StepInfo = spi.StepInfo(
+        tr1_numpys[0], tr1_numpys[1], tbegin, tend, npoints
+    )
+    vout_delta: float = my_meas.ydelta
+    formatted_answer: str = f"delta vout: {vout_delta:.5g} V"
+    spi.print_section("Part 7 calculations", formatted_answer)
+
+
 def main() -> None:
     # initialize paths, netlists, and vectors dictionaries
     paths_dict, netlists_dict, vectors_dict = initialize()
@@ -523,9 +828,9 @@ def main() -> None:
     part2(paths_dict, netlists_dict, vectors_dict)
     part3(paths_dict, netlists_dict, vectors_dict)
     part4(paths_dict, netlists_dict, vectors_dict)
-    # part5(paths_dict, netlists_dict, vectors_dict)
-    # part6(paths_dict, netlists_dict, vectors_dict)
-    # part7(paths_dict, netlists_dict, vectors_dict)
+    part5(paths_dict, netlists_dict, vectors_dict)
+    part6(paths_dict, netlists_dict, vectors_dict)
+    part7(paths_dict, netlists_dict, vectors_dict)
 
 
 if __name__ == "__main__":
