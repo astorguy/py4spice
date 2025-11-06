@@ -13,8 +13,8 @@ SPICE – 50 Years and One Billion Transistors Later](https://youtu.be/TQ8cJ9-Gy
 Ngspice is the today's open source of the original SPICE. It's the simulation engine of several electronic design automation (EDA) programs. Knowledge of Ngspice gives you solid understanding of all SPICE derivatives.
 
 # Typical Python Script Flow
-The ***Python for Spice*** modules are used to help you control Ngspice with your main Python script. The flow of the program will likely follow a simple three-stage structure:
-1. Prepare the files necessary for simulation
+The ***Python for Spice*** modules are used to help you control Ngspice with a Python script. The flow of the script will likely follow a simple three-stage structure:
+1. Prepare the files required for simulation
 1. Execute Ngspice simulation(s)
 1. Convert the simulation results to dictionaries or numpy arrays
 
