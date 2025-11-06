@@ -619,7 +619,7 @@ def run_sim_part6(
     my_paths_dict: dict[str, Path],
     my_list_analyses: list[spi.Analyses],
     cf: float,
-) -> tuple[dict[str, spi.Netlist], spi.Waveforms]:
+) -> spi.Waveforms:
     my_netlists_dict[Ky.CF] = spi.Netlist(f"CF rc div {cf}")
 
     my_netlists_dict[Ky.TOP6] = (
@@ -662,7 +662,7 @@ def run_sim_part6(
     # get waveforms from sim_results
     tr1 = spi.Waveforms(sim_results[0].header, sim_results[0].data_plot)
 
-    return my_netlists_dict, tr1
+    return tr1
 
 
 def part6(
@@ -694,9 +694,7 @@ def part6(
     cf_values = [1e-9, 10e-9, 47e-9, 100e-9]  # try different values of CF
     waves: list[spi.Waveforms] = []
     for cf in cf_values:
-        my_netlists_dict, wave = run_sim_part6(
-            my_netlists_dict, my_paths_dict, list_of_analyses, cf
-        )
+        wave = run_sim_part6(my_netlists_dict, my_paths_dict, list_of_analyses, cf)
         waves.append(wave)
 
     # first waveform in list has the x-axis array
