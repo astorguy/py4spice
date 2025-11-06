@@ -2,7 +2,7 @@
 Lightweight Python package interface to Ngspice
 
 ## Motivation
-[Ngspice](https://ngspice.sourceforge.io/) is an open source electrical circuit simulator. It typically executes in batch mode using an archaic script interface. The ***Python for Spice*** package facilitates Ngspice interaction. Its simple classes and functions transparently create Ngspice netlists and scripts. You can launch multiple analyses and convert the results to [NumPy](https://numpy.org/) arrays, enabling downstream computation or plotting with [Matplotlib](https://matplotlib.org/).
+[Ngspice](https://ngspice.sourceforge.io/) is an open source electrical circuit simulator. It typically executes in batch mode using an archaic script interface. The ***Python for Spice*** package facilitates Ngspice interaction with a Python script. Its simple classes and functions transparently create Ngspice netlists and scripts. You can launch multiple analyses and convert the results to [NumPy](https://numpy.org/) arrays, enabling downstream computation or plotting with [Matplotlib](https://matplotlib.org/).
 
 A modest knowledge of Ngspice and Python is required.
 
