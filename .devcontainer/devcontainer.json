@@ -25,7 +25,8 @@
         "ryanolsonx.solarized",
         "tamasfe.even-better-toml",
         "wesbos.theme-cobalt2",
-        "xuanli.spice"
+        "xuanli.spice",
+        "streetsidesoftware.code-spell-checker",
       ],
       "settings": {
         "terminal.integrated.defaultProfile.linux": "bash",
