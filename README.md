@@ -2,7 +2,7 @@
 Lightweight Python package interface to Ngspice
 
 ## Motivation
-[Ngspice](https://ngspice.sourceforge.io/) is an open source electrical circuit simulator. It typically executes in batch mode using an archaic script interface. The ***Python-for-Spice*** package facilitates Ngspice interaction using Python scripts. You can launch multiple analyses and convert the results to [NumPy](https://numpy.org/) arrays, enabling downstream computation or plotting with [Matplotlib](https://matplotlib.org/). The motivation for Python-for-Spice is to access Ngspice from within a Python script, enabling advanced analysis of electrical circuits.
+[Ngspice](https://ngspice.sourceforge.io/) is an open source electrical circuit simulator. It typically executes in batch mode using an archaic script interface. The ***Python-for-Spice*** package facilitates Ngspice execution using Python scripts. You can launch multiple analyses and convert the results to [NumPy](https://numpy.org/) arrays, enabling downstream computation or plotting with [Matplotlib](https://matplotlib.org/). The motivation for Python-for-Spice is to access Ngspice from within a Python script, enabling advanced analysis of electrical circuits.
 
 A modest knowledge of Ngspice and Python is required.
 
@@ -19,14 +19,14 @@ The Python-for-Spice modules help you control Ngspice with a Python script. The 
 1. Convert the simulation results to dictionaries or NumPy arrays
 
 ## The Infamous SPICE Netlist
-Developed in 1971, long before modern operating systems, interaction with SPICE is unorthodox. Though modern SPICE flavors offer more flexible interfaces, traditionally, SPICE reads a single *netlist* file, executes a batch process, and creates a set of output files. Everything the program needs to know is in this file. Being a misnomer, the netlist includes:
+Developed in 1971, long before modern operating systems, interaction with SPICE is unorthodox. Though modern SPICE flavors offer more flexible interfaces, traditionally, SPICE reads a single *netlist* file, executes a batch process, and creates a set of output files. Everything the program needs to know is in this file. The netlist includes:
 * list of the components of the circuit to simulate, their interconnections (i.e. nets), and their values
 * types of simulations to execute
 * output control
 * semiconductor *model* definitions
 * other miscellaneous settings
 
-Python-for-Spice facilitates construction of the input netlist. It gathers, creates, and concatenates the content for the single netlist necessary for execution. Simulation is controlled by using the *control section* feature of Ngspice.
+Python-for-Spice gathers, creates, and concatenates the necessary content into a single netlist. Simulation is controlled by using the *control section* feature of Ngspice.
 
 ## Ngspice API
 Ngspice has an API which is used by most EDA tools for integration. The Python-for-Spice offers an alternative method to run Ngspice without the complexity of the API.
