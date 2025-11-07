@@ -16,11 +16,11 @@ Here are example circuits that use the `py4spice` (Python-for-Spice) package. Ea
 |**Description:**|Linear voltage regulator |
 |**Source:**|*Switch-Mode Power Supplies, 2nd Edition* by Christophe P. Basso|
 |**Format:**|Python, Jupyter Notebook|
-|**Content:**|stuff|
+|**Content:**|op, dc analyses; |
 | | |
 |-|-|
 |**Directory:**|`sec_1_04_04_lin_reg`|
 |**Description:**|Theoretical linear voltage regulator|
 |**Source:**|*Switch-Mode Power Supplies, 2nd Edition* by Christophe P. Basso|
 |**Format:**|Python, Jupyter Notebook|
-|**Content:**|stuff|
+|**Content:**|op, tf, tr, ac analyses; |

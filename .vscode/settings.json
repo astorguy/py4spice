@@ -6,9 +6,11 @@
         "netlist",
         "netlists",
         "Ngspice",
+        "numpys",
         "PSPICE",
         "QSPICE",
         "vmeas",
-        "vout"
+        "vout",
+        "vref"
     ]
 }
