@@ -1,11 +1,14 @@
 {
     "cSpell.words": [
+        "cntl",
         "HSPICE",
         "Matplotlib",
         "netlist",
         "netlists",
         "Ngspice",
         "PSPICE",
-        "QSPICE"
+        "QSPICE",
+        "vmeas",
+        "vout"
     ]
 }

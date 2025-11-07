@@ -67,7 +67,7 @@ def initialize() -> tuple[
     # create results directory if it does not exist
     results_path.mkdir(parents=True, exist_ok=True)
 
-    # create simlulation transcript file. If it exists, make sure it is empty
+    # create simulation transcript file. If it exists, make sure it is empty
     sim_tran_filename: Path = results_path / my_config[Ky.GLOBAL][Ky.SIM_TRANSCRIPT_STR]
     if sim_tran_filename.exists():  # delete and recreate. this makes sure it's empty
         sim_tran_filename.unlink()
@@ -181,7 +181,7 @@ def part1(
     ]
     (my_op1,) = sim_results  # give each SimResults object an easier name
 
-    # diaplay results for operating point analysis
+    # display results for operating point analysis
     spi.print_section("Operating Point Results", my_op1.table_for_print())
 
     # Calculate power and efficiency
