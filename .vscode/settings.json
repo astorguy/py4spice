@@ -27,6 +27,7 @@
         "vmeas",
         "vout",
         "vref",
+        "ydelta",
         "zout"
     ]
 }
