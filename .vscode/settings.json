@@ -1,0 +1,32 @@
+{
+    "cSpell.words": [
+        "addopts",
+        "cntl",
+        "cout",
+        "fbegin",
+        "fhigh",
+        "fmid",
+        "HSPICE",
+        "kicad",
+        "Matplotlib",
+        "mypy",
+        "netlist",
+        "netlists",
+        "Ngspice",
+        "npoints",
+        "npts",
+        "numpy",
+        "numpys",
+        "peaktime",
+        "PSPICE",
+        "pytest",
+        "QSPICE",
+        "scipy",
+        "setuptools",
+        "tbegin",
+        "vmeas",
+        "vout",
+        "vref",
+        "zout"
+    ]
+}
