@@ -36,6 +36,20 @@ wheels = [
 ]
 
 [[package]]
+name = "control"
+version = "0.10.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "matplotlib" },
+    { name = "numpy" },
+    { name = "scipy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/13/f8/f93a41af0fe5fc8534908fb3c2b3e87059cc68bea7533c056f180356274c/control-0.10.2.tar.gz", hash = "sha256:d0cf63f6cfb68a4c8e827c26c3744d129e9777fedc9a5d86ca4740548f23a98b", size = 12407506, upload-time = "2025-07-05T21:24:38.337Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f2/0a/9f4c2a811b065c92f2483f26657dca373699388c959193ef27a644af1805/control-0.10.2-py3-none-any.whl", hash = "sha256:8f7b5c58f5ccd761a6c070e3dedceca4c53c7a9cf105fcc22caba7a67f99025a", size = 578274, upload-time = "2025-07-05T21:24:35.523Z" },
+]
+
+[[package]]
 name = "cycler"
 version = "0.12.1"
 source = { registry = "https://pypi.org/simple" }
@@ -278,6 +292,7 @@ name = "py4spice"
 version = "0.0.1"
 source = { editable = "." }
 dependencies = [
+    { name = "control" },
     { name = "matplotlib" },
     { name = "mypy" },
     { name = "numpy" },
@@ -292,6 +307,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "control", specifier = ">=0.10.2" },
     { name = "matplotlib", specifier = ">=3.10.7" },
     { name = "mypy", specifier = ">=1.18.2" },
     { name = "numpy", specifier = ">=2.0.2" },

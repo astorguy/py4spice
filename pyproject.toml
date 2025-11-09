@@ -16,6 +16,7 @@ license = { text = "MIT License" }
 keywords = ["ngspice", "spice", "simulation"]
 classifiers = ["Programming Language :: Python :: 3"]
 dependencies = [
+    "control>=0.10.2",
     "matplotlib>=3.10.7",
     "mypy>=1.18.2",
     "numpy>=2.0.2",
