@@ -114,7 +114,6 @@ def initialize() -> tuple[
         Ky.SIM_TRANSCRIPT_FILENAME: sim_tran_filename,
     }
 
-    # netlists_dict = define_netlists(paths_dict)
     nets_path: Path = paths_dict[Ky.NETLISTS_PATH]  # make shorter alias
     netlists_dict: dict[str, spi.Netlist] = {}  # create empty netlist dictionary
 
