@@ -20,11 +20,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.x"
+          python-version: "3.14"
+
+      - name: Install uv
+        run: |
+          pip install uv>=0.4.0
 
       - name: Build release distributions
         run: |
