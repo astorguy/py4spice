@@ -114,13 +114,12 @@ def initialize() -> tuple[
         Ky.SIM_TRANSCRIPT_FILENAME: sim_tran_filename,
     }
 
-    # netlists_dict = define_netlists(paths_dict)
     nets_path: Path = paths_dict[Ky.NETLISTS_PATH]  # make shorter alias
     netlists_dict: dict[str, spi.Netlist] = {}  # create empty netlist dictionary
 
     netlists_dict[Ky.BLANKLINE] = spi.Netlist("")  # blank line for spacing
     netlists_dict[Ky.TITLE] = spi.Netlist("* linear regulator section 1.4.4")
-    netlists_dict[Ky.END_LINE] = spi.Netlist(".end")  # end statement
+    netlists_dict[Ky.END_LINE] = spi.Netlist(".end")
 
     # create netlist objects from files and add to netlist dictionary
     netlists_dict[Ky.DUT] = spi.Netlist(nets_path / "dut.cir")
