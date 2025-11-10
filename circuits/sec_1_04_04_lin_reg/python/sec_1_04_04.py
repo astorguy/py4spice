@@ -119,7 +119,7 @@ def initialize() -> tuple[
 
     netlists_dict[Ky.BLANKLINE] = spi.Netlist("")  # blank line for spacing
     netlists_dict[Ky.TITLE] = spi.Netlist("* linear regulator section 1.4.4")
-    netlists_dict[Ky.END_LINE] = spi.Netlist(".end")  # end statement
+    netlists_dict[Ky.END_LINE] = spi.Netlist(".end")
 
     # create netlist objects from files and add to netlist dictionary
     netlists_dict[Ky.DUT] = spi.Netlist(nets_path / "dut.cir")
