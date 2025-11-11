@@ -18,10 +18,8 @@ classifiers = ["Programming Language :: Python :: 3"]
 dependencies = [
     "control>=0.10.2",
     "matplotlib>=3.10.7",
-    "mypy>=1.18.2",
     "numpy>=2.0.2",
     "scipy>=1.16.2",
-    "scipy-stubs>=1.16.3.0",
 ]
 
 [tool.setuptools.packages.find]
@@ -63,4 +61,8 @@ addopts = ["--import-mode=importlib"]
 repository = "https://github.com/astorguy/py4spice"
 
 [dependency-groups]
-dev = ["ruff>=0.14.0"]
+dev = [
+    "ruff>=0.14.0",
+    "mypy>=1.18.2",
+    "scipy-stubs>=1.16.3.0",
+]
