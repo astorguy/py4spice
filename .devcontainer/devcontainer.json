@@ -40,6 +40,7 @@
         "python.formatting.provider": "ruff",
         "python.linting.provider": "ruff",
         "workbench.colorTheme": "Cobalt2",
+        "cSpell.enabled": false,
         "[python]": {
           "editor.defaultFormatter": "charliermarsh.ruff",
           "editor.formatOnSave": true,
