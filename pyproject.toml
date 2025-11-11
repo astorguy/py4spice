@@ -22,11 +22,7 @@ dependencies = [
     "scipy>=1.16.2",
 ]
 [dependency-groups]
-dev = [
-    "ruff>=0.14.0",
-    "mypy>=1.18.2",
-    "scipy-stubs>=1.16.3.0",
-]
+dev = ["ruff>=0.14.0", "mypy>=1.18.2", "scipy-stubs>=1.16.3.0"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
