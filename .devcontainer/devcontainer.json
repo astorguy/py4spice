@@ -3,7 +3,7 @@
   "build": {
     "dockerfile": "Dockerfile"
   },
-  // this is needed for uv to copy files instead of using hardlinks (avoid warning meessage)
+  // this is needed for uv to copy files instead of using hard links (avoid warning message)
   "remoteEnv": {
     "UV_LINK_MODE": "copy"
   },
