@@ -1,0 +1,18 @@
+name: Manual Trigger Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: "Optional message to display"
+        required: false
+        default: "Hello from workflow_dispatch!"
+
+jobs:
+  say-hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print message
+        run: echo "The workflow was triggered manually!"
+      - name: Show input message
+        run: echo "Message: ${{ github.event.inputs.message }}"
