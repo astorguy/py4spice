@@ -1,0 +1,19 @@
+name: Manual Test Workflow
+
+on:
+  # Allows you to run this workflow manually from the Actions tab in GitHub
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Optional reason for running this test'
+        required: false
+        default: 'Manual test run'
+
+jobs:
+  print_message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print a Test Message
+        run: |
+          echo "✅ This is a test message from a manually triggered GitHub Action!"
+          echo "The reason provided for this run was: ${{ github.event.inputs.reason }}"

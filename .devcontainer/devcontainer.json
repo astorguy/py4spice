@@ -7,7 +7,7 @@
   "remoteEnv": {
     "UV_LINK_MODE": "copy"
   },
-  "postCreateCommand": "/workspaces/$(basename $PWD)/.devcontainer/postCreateSetup.sh",
+  "postCreateCommand": "/workspaces/$(basename $PWD)/.devcontainer/postCreateCommand.sh",
   "remoteUser": "vscode",
   "customizations": {
     "codespaces": {
