@@ -16,6 +16,6 @@ jobs:
     steps:
       - name: Print message
         run: echo "✅ Triggered manually on the 'cutter' branch!"
-      - name: Show input message
-        run: echo "Message: ${{ github.event.inputs.message }}"
+      # - name: Show input message
+      #   run: echo "Message: ${{ github.event.inputs.message }}"
 
