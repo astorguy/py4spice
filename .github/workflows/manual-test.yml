@@ -1,4 +1,4 @@
-name: Manual Trigger Test
+name: Manual Trigger Test (cutter only)
 
 on:
   workflow_dispatch:
@@ -6,13 +6,16 @@ on:
       message:
         description: "Optional message to display"
         required: false
-        default: "Hello from workflow_dispatch!"
+        default: "Hello from cutter!"
 
 jobs:
   say-hello:
+    if: github.ref == 'refs/heads/cutter'
     runs-on: ubuntu-latest
+
     steps:
       - name: Print message
-        run: echo "The workflow was triggered manually!"
-      # - name: Show input message
-      #   run: echo "Message: ${{ github.event.inputs.message }}"
+        run: echo "✅ Triggered manually on the 'cutter' branch!"
+      - name: Show input message
+        run: echo "Message: ${{ github.event.inputs.message }}"
+
