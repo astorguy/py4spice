@@ -14,5 +14,5 @@ jobs:
     steps:
       - name: Print message
         run: echo "The workflow was triggered manually!"
-      - name: Show input message
-        run: echo "Message: ${{ github.event.inputs.message }}"
+      # - name: Show input message
+      #   run: echo "Message: ${{ github.event.inputs.message }}"
