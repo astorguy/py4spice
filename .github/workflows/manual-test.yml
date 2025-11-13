@@ -1,21 +1,19 @@
-name: Manual Trigger Test (cutter only)
+name: Manual Test Workflow
 
 on:
+  # Allows you to run this workflow manually from the Actions tab in GitHub
   workflow_dispatch:
     inputs:
-      message:
-        description: "Optional message to display"
+      reason:
+        description: 'Optional reason for running this test'
         required: false
-        default: "Hello from cutter!"
+        default: 'Manual test run'
 
 jobs:
-  say-hello:
-    if: github.ref == 'refs/heads/cutter'
+  print_message:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Print message
-        run: echo "✅ Triggered manually on the 'cutter' branch!"
-      # - name: Show input message
-      #   run: echo "Message: ${{ github.event.inputs.message }}"
-
+      - name: Print a Test Message
+        run: |
+          echo "✅ This is a test message from a manually triggered GitHub Action!"
+          echo "The reason provided for this run was: ${{ github.event.inputs.reason }}"
