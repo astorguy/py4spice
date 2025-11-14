@@ -5,7 +5,7 @@ version = "0.0.1"
 authors = [{ name = "Mark Chadwick", email = "mark.chadwick@techsharpen.com" }]
 description = "Python modules for running Ngspice"
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.12"
 license = { text = "MIT License" }
 keywords = ["ngspice", "spice", "simulation"]
 classifiers = ["Programming Language :: Python :: 3"]
