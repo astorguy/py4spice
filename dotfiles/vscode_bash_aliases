@@ -1,9 +1,0 @@
-alias r='uv run /workspaces/py4spice/circuits/sec_1_04_04_lin_reg/python/sec_1_04_04.py'
-alias my='uv run mypy'
-
-alias ws='cd $APP_HOME; ls -la'
-
-alias al='alias'
-alias ll='ls -la'
-alias hi='history'
-alias clr='clear'
