@@ -19,7 +19,12 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [dependency-groups]
-dev = ["ruff>=0.14.0", "mypy>=1.18.2", "scipy-stubs>=1.16.3.0"]
+dev = [
+    "ruff>=0.14.0",
+    "mypy>=1.18.2",
+    "scipy-stubs>=1.16.3.0",
+    "pytest>=9.0.1",
+]
 
 [tool.mypy]
 pretty = true
