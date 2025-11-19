@@ -1,22 +1,25 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "py4spice"
 version = "0.0.1"
-authors = [{ name = "Mark Chadwick", email = "mark.chadwick@techsharpen.com" }]
 description = "Python modules for running Ngspice"
 readme = "README.md"
+authors = [{ name = "Mark Chadwick", email = "mark.chadwick@techsharpen.com" }]
 requires-python = ">=3.12"
 license = { text = "MIT License" }
 keywords = ["ngspice", "spice", "simulation"]
 classifiers = ["Programming Language :: Python :: 3"]
-dependencies = ["numpy>=2.0", "scipy>=1.15", "matplotlib>=3.8"]
+dependencies = [
+    "numpy>=2.0",
+    "scipy>=1.15",
+    "matplotlib>=3.8",
+]
 
 [project.urls]
-repository = "https://github.com/astorguy/py4spice"
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+Repository = "https://github.com/astorguy/py4spice"
 
 [dependency-groups]
 dev = [
