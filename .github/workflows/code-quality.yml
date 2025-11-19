@@ -2,16 +2,23 @@ name: Python Code Quality
 on:
       workflow_dispatch:
 jobs:
-    lock_file:
+    uv_lock:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v5
             - uses: ./.github/actions/setup
             - run: uv lock --locked
-    linting:
+    lint:
         runs-on: ubuntu-latest
-        needs: [lock_file]
+        needs: [uv_lock]
         steps:
             - uses: actions/checkout@v5
             - uses: ./.github/actions/setup
             - run: uvx ruff check .
+    format_check:
+        runs-on: ubuntu-latest
+        needs: [uv_lock]
+        steps:
+            - uses: actions/checkout@v4
+            - uses: ./.github/actions/setup
+            - run: uvx ruff format --check .
