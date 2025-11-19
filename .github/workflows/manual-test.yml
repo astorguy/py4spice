@@ -1,13 +1,9 @@
-name: Manual Test Workflow
+name: Manual Test
 
 on:
   # Allows you to run this workflow manually from the Actions tab in GitHub
   workflow_dispatch:
-    inputs:
-      reason:
-        description: 'Optional reason for running this test'
-        required: false
-        default: 'Manual test run'
+  
 jobs:
   test:
     runs-on: ubuntu-latest
