@@ -1,4 +1,4 @@
-"""Vector set of signals for which to gather data, plot, ... """
+"""Vector set of signals for which to gather data, plot, ..."""
 
 from pathlib import Path
 from typing import Literal
@@ -18,7 +18,6 @@ class Analyses:
         vector: Vectors,
         results_loc: Path,
     ) -> None:
-
         self.name: str = name
         self.cmd_type = cmd_type  # "tran", "ac", ...
         self.cmd_strings: list[str] = [str(item) for item in cmd]

@@ -1,5 +1,4 @@
-"""Ngspice simulation results to Pandas
-"""
+"""Ngspice simulation results to Pandas"""
 
 from pathlib import Path
 import pandas as pd

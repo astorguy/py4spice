@@ -1,4 +1,5 @@
 """print_section.py unit test"""
+
 import sys
 from typing import Any
 import pytest

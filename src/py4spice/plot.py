@@ -101,7 +101,7 @@ class Plot:
 
     def set_title(self, title: str) -> None:
         """title for plot"""
-        self.axe.set_title(title) # type: ignore
+        self.axe.set_title(title)  # type: ignore
 
     def define_axes(
         self, x_info: tuple[str, str, Scale], y_info: tuple[str, str, Scale]
@@ -123,10 +123,10 @@ class Plot:
         if y_scale not in ["linear", "log"]:
             y_scale = "linear"
 
-        self.axe.set_xlabel(f"{x_measure} ({x_units})") # type: ignore
-        self.axe.set_ylabel(f"{y_measure} ({y_units})") # type: ignore
-        self.axe.set_xscale(x_scale) # type: ignore
-        self.axe.set_yscale(y_scale) # type: ignore
+        self.axe.set_xlabel(f"{x_measure} ({x_units})")  # type: ignore
+        self.axe.set_ylabel(f"{y_measure} ({y_units})")  # type: ignore
+        self.axe.set_xscale(x_scale)  # type: ignore
+        self.axe.set_yscale(y_scale)  # type: ignore
 
     def zoom(
         self,
@@ -149,7 +149,7 @@ class Plot:
     def png(self) -> None:
         """Create a png of the plot and store in the "results_loc" dir"""
         plot_filename: Path = self.results_path / f"{self.name}.png"
-        self.fig.savefig(str(plot_filename)) # type: ignore
+        self.fig.savefig(str(plot_filename))  # type: ignore
 
 
 def display_plots() -> None:
@@ -157,4 +157,4 @@ def display_plots() -> None:
     Display all plots to screen. These displays are different
     from the png's which are saved with a different method.
     """
-    plt.show() # type: ignore
+    plt.show()  # type: ignore

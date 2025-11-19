@@ -1,5 +1,5 @@
-"""section off text so it is easier to read in terminal
-"""
+"""section off text so it is easier to read in terminal"""
+
 from typing import Any
 
 

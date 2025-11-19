@@ -1,5 +1,5 @@
-"""Line plot multiple pd.DataFrame results from simulation
-"""
+"""Line plot multiple pd.DataFrame results from simulation"""
+
 from pathlib import Path
 from typing import TypeAlias, Optional, Literal
 import pandas as pd

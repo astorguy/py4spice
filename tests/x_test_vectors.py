@@ -1,4 +1,5 @@
 """vectors.py unit test"""
+
 import pytest
 import ngspicehlp as ng
 

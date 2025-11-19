@@ -1,4 +1,4 @@
-""" Create control file"""
+"""Create control file"""
 
 import time
 from pathlib import Path
@@ -8,7 +8,6 @@ class Control:
     """Generate Control file"""
 
     def __init__(self) -> None:
-
         self.beginning: list[str] = [".control"]
         self.beginning.extend([f"* Timestamp: {time.asctime()}"])
         self.beginning.extend(["set wr_singlescale  $ makes one x-axis for wrdata"])

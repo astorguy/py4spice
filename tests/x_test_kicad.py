@@ -1,4 +1,5 @@
 """kicad.py unit test"""
+
 from pathlib import Path
 import ngspicehlp as ng
 

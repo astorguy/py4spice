@@ -1,4 +1,4 @@
-"""setup or run an ngspice simulation """
+"""setup or run an ngspice simulation"""
 
 import datetime
 import subprocess

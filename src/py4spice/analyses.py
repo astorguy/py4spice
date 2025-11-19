@@ -1,4 +1,4 @@
-"""Vector set of signals for which to gather data, plot, ... """
+"""Vector set of signals for which to gather data, plot, ..."""
 
 from pathlib import Path
 from .vectors import Vectors
