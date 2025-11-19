@@ -1,15 +1,19 @@
 """analyes.py unit test"""
+
 from pathlib import Path
-import ngspicehlp as ng
+
+# import pytest
+import py4spice as spi
 
 
+# @pytest.mark.skip(reason="WIP")
 def test_input() -> None:
     """vector with one signal initialized as a list"""
 
-    vec_all = ng.Vectors("all")
+    vec_all = spi.Vectors("all")
     results_path = Path("../fred")
 
     # computed
-    my_analysis = ng.Analyses("a1", "op", ["op"], vec_all, results_path)
+    my_analysis = spi.Analyses("a1", "op", "op", vec_all, results_path)
 
-    assert my_analysis.vec_output == "print line all > ..\\fred\\a1.txt"
+    assert my_analysis.vec_output == "print line all > ../fred/a1.txt"
