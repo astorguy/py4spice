@@ -50,8 +50,10 @@ jobs:
         - uses: actions/checkout@v5
         - uses: ./.github/actions/setup
         - run: uv build
-        # Add this step to save the files!
-        - uses: actions/upload-artifact@v5
+        
+        # Add this step to save the files (wheel & sdist)
+        - name: upload dist artifacts
+          uses: actions/upload-artifact@v5
           with:
             name: python-package-distributions
             path: dist/
