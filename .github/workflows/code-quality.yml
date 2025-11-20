@@ -19,34 +19,39 @@ jobs:
         runs-on: ubuntu-latest
         needs: [uv_lock]
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v5
             - uses: ./.github/actions/setup
             - run: uvx ruff format --check .
     pyright_check:
         runs-on: ubuntu-latest
         needs: [uv_lock]
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v5
             - uses: ./.github/actions/setup
             - run: uv run pyright
     mypy_check:
         runs-on: ubuntu-latest
         needs: [uv_lock]
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v5
             - uses: ./.github/actions/setup
             - run: uv run mypy
     pytest:
         runs-on: ubuntu-latest
         needs: [uv_lock]
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v5
             - uses: ./.github/actions/setup
             - run: uv run pytest
     build:
         runs-on: [ubuntu-latest]
         needs: [ruff_lint, ruff_format, pyright_check, mypy_check, pytest]
         steps:
-        - uses: actions/checkout@v4
+        - uses: actions/checkout@v5
         - uses: ./.github/actions/setup
         - run: uv build
+        # Add this step to save the files!
+        - uses: actions/upload-artifact@v5
+          with:
+            name: python-package-distributions
+            path: dist/
