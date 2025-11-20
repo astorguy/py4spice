@@ -1,59 +1,59 @@
 name: Python Code Quality
 on:
-      workflow_dispatch:
+  workflow_dispatch:
 jobs:
-    uv_lock:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v5
-            - uses: ./.github/actions/setup
-            - run: uv lock --locked
-    ruff_lint:
-        runs-on: ubuntu-latest
-        needs: [uv_lock]
-        steps:
-            - uses: actions/checkout@v5
-            - uses: ./.github/actions/setup
-            - run: uvx ruff check .
-    ruff_format:
-        runs-on: ubuntu-latest
-        needs: [uv_lock]
-        steps:
-            - uses: actions/checkout@v5
-            - uses: ./.github/actions/setup
-            - run: uvx ruff format --check .
-    pyright_check:
-        runs-on: ubuntu-latest
-        needs: [uv_lock]
-        steps:
-            - uses: actions/checkout@v5
-            - uses: ./.github/actions/setup
-            - run: uv run pyright
-    mypy_check:
-        runs-on: ubuntu-latest
-        needs: [uv_lock]
-        steps:
-            - uses: actions/checkout@v5
-            - uses: ./.github/actions/setup
-            - run: uv run mypy
-    pytest:
-        runs-on: ubuntu-latest
-        needs: [uv_lock]
-        steps:
-            - uses: actions/checkout@v5
-            - uses: ./.github/actions/setup
-            - run: uv run pytest
-    build:
-        runs-on: [ubuntu-latest]
-        needs: [ruff_lint, ruff_format, pyright_check, mypy_check, pytest]
-        steps:
-        - uses: actions/checkout@v5
-        - uses: ./.github/actions/setup
-        - run: uv build
+  uv_lock:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup
+      - run: uv lock --locked
+  ruff_lint:
+    runs-on: ubuntu-latest
+    needs: [uv_lock]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup
+      - run: uvx ruff check .
+  ruff_format:
+    runs-on: ubuntu-latest
+    needs: [uv_lock]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup
+      - run: uvx ruff format --check .
+  pyright_check:
+    runs-on: ubuntu-latest
+    needs: [uv_lock]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup
+      - run: uv run pyright
+  mypy_check:
+    runs-on: ubuntu-latest
+    needs: [uv_lock]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup
+      - run: uv run mypy
+  pytest:
+    runs-on: ubuntu-latest
+    needs: [uv_lock]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup
+      - run: uv run pytest
+  build:
+    runs-on: [ubuntu-latest]
+    needs: [ruff_lint, ruff_format, pyright_check, mypy_check, pytest]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup
+      - run: uv build
         
         # Add this step to save the files (wheel & sdist)
         #- name: upload dist artifacts
-         # uses: actions/upload-artifact@v4
+        # uses: actions/upload-artifact@v4
           #with:
-           # name: python-package-distributions
+         # name: python-package-distributions
             #path: dist/
