@@ -52,8 +52,8 @@ jobs:
         - run: uv build
         
         # Add this step to save the files (wheel & sdist)
-        - name: upload dist artifacts
-          uses: actions/upload-artifact@v4
-          with:
-            name: python-package-distributions
-            path: dist/
+        #- name: upload dist artifacts
+         # uses: actions/upload-artifact@v4
+          #with:
+           # name: python-package-distributions
+            #path: dist/
