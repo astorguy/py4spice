@@ -12,11 +12,7 @@ requires-python = ">=3.12"
 license = { text = "MIT License" }
 keywords = ["ngspice", "spice", "simulation"]
 classifiers = ["Programming Language :: Python :: 3"]
-dependencies = [
-    "numpy>=2.0",
-    "scipy>=1.15",
-    "matplotlib>=3.8",
-]
+dependencies = ["numpy>=2.0", "scipy>=1.15", "matplotlib>=3.8"]
 
 [project.urls]
 Repository = "https://github.com/astorguy/py4spice"
@@ -27,7 +23,17 @@ dev = [
     "mypy>=1.18.2",
     "scipy-stubs>=1.16.3.0",
     "pytest>=9.0.1",
+    "pyright>=1.1.407",
 ]
+
+[tool.pyright]
+include = [
+    "src/py4spice",
+    "circuits/sec_1_04_01_dividers/python",
+    "circuits/sec_1_04_02_lin_reg/python",
+    "circuits/sec_1_04_04_lin_reg/python",
+]
+typeCheckingMode = "basic"
 
 [tool.mypy]
 pretty = true
