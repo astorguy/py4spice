@@ -21,43 +21,53 @@ jobs:
         with:
           version: "0.9.10"
       - run: uvx ruff check .
-  
   ruff_format:
     runs-on: ubuntu-latest
     needs: [uv_lock]
     steps:
       - uses: actions/checkout@v5
-      - uses: ./.github/actions/setup
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.10"      
       - run: uvx ruff format --check .
-  
   pyright_check:
     runs-on: ubuntu-latest
     needs: [uv_lock]
     steps:
       - uses: actions/checkout@v5
-      - uses: ./.github/actions/setup
-      - run: uv run pyright
-      
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.10"
+      - run: uv run pyright    
   mypy_check:
     runs-on: ubuntu-latest
     needs: [uv_lock]
     steps:
       - uses: actions/checkout@v5
-      - uses: ./.github/actions/setup
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.10"
       - run: uv run mypy
-      
   pytest:
     runs-on: ubuntu-latest
     needs: [uv_lock]
     steps:
       - uses: actions/checkout@v5
-      - uses: ./.github/actions/setup
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.10"
       - run: uv run pytest
-      
   build:
     runs-on: [ubuntu-latest]
     needs: [ruff_lint, ruff_format, pyright_check, mypy_check, pytest]
     steps:
       - uses: actions/checkout@v5
-      - uses: ./.github/actions/setup
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.10"
       - run: uv build
