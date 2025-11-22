@@ -1,0 +1,42 @@
+name: publish-to_testpypi
+
+on:
+  # Allows you to run this workflow manually from the Actions tab in GitHub
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build distribution 📦
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+publish-to-testpypi:
+    name: Publish Python distribution to TestPyPI
+    needs:
+    - build
+    runs-on: ubuntu-latest`
+
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/p/<package-name>
+
+    permissions:
+      id-token: write  # IMPORTANT: mandatory for trusted publishing
+
+    steps:
+    - name: Download all the dists
+      uses: actions/download-artifact@v4
+      with:
+        name: python-package-distributions
+        path: dist/
+    - name: Publish distribution 📦 to TestPyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        repository-url: https://test.pypi.org/legacy/
