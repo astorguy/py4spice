@@ -62,7 +62,7 @@ jobs:
           version: "0.9.10"
       - run: uv run pytest
   build:
-    runs-on: [ubuntu-latest]
+    runs-on: ubuntu-latest
     needs: [ruff_lint, ruff_format, pyright_check, mypy_check, pytest]
     steps:
       - uses: actions/checkout@v5
