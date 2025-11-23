@@ -1,42 +1,44 @@
 name: publish-to_testpypi
-
 on:
-  # Allows you to run this workflow manually from the Actions tab in GitHub
   workflow_dispatch:
-
 jobs:
+  uv_lock:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.10"
+      - run: uv lock --locked
   build:
     name: Build distribution
     runs-on: ubuntu-latest
-
+    needs: [uv_lock]
     steps:
       - uses: actions/checkout@v5
-
-      - name: Set up Python
-        uses: actions/setup-python@v6
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
         with:
-          python-version: "3.12"
-
-publish-to-testpypi:
+          version: "0.9.10"
+      - name: Set up Python
+      - run: uv build
+  publish-to-testpypi:
     name: Publish Python distribution to TestPyPI
-    needs:
-    - build
-    runs-on: ubuntu-latest`
-
+    needs: [build]
+    runs-on: ubuntu-latest
     environment:
       name: testpypi
       url: https://test.pypi.org/p/<package-name>
-
     permissions:
       id-token: write  # IMPORTANT: mandatory for trusted publishing
-
     steps:
     - name: Download all the dists
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: python-package-distributions
         path: dist/
-    - name: Publish distribution to TestPyPI
-      uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        repository-url: https://test.pypi.org/legacy/
+#    - name: Publish distribution to TestPyPI
+#      uses: pypa/gh-action-pypi-publish@release/v1
+#      with:
+#        repository-url: https://test.pypi.org/legacy/
