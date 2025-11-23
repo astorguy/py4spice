@@ -21,7 +21,6 @@ jobs:
         uses: astral-sh/setup-uv@v7
         with:
           version: "0.9.10"
-      - name: Set up Python
       - run: uv build
   publish-to-testpypi:
     name: Publish Python distribution to TestPyPI
