@@ -1,7 +1,13 @@
 name: Publish to testpypi
+
+# trigger on workflow_dispatch (manual) OR Github publish release
 on:
   workflow_dispatch:
+  release:
+    types: [published]
+
 jobs:
+
   uv_lock:
     runs-on: ubuntu-latest
     steps:
@@ -11,6 +17,7 @@ jobs:
         with:
           version: "0.9.10"
       - run: uv lock --locked
+
   build:
     name: Build distribution
     runs-on: ubuntu-latest
@@ -27,6 +34,7 @@ jobs:
         with:
           name: python-package-distributions
           path: dist/*
+
   publish-to-testpypi:
     name: Publish Python distribution to TestPyPI
     needs: [build]
