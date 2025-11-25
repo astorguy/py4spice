@@ -1,0 +1,57 @@
+
+name: Publish to testpypi
+
+# trigger on workflow_dispatch (manual) OR Github publish release
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+jobs:
+
+  uv_lock:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.10"
+      - run: uv lock --locked
+
+  build:
+    name: Build distribution
+    runs-on: ubuntu-latest
+    needs: [uv_lock]
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.10"
+      - run: uv build
+      - name: Upload dists
+        uses: actions/upload-artifact@v5
+        with:
+          name: python-package-distributions
+          path: dist/*
+
+  publish-to-testpypi:
+    name: Publish Python distribution to TestPyPI
+    needs: [build]
+    runs-on: ubuntu-latest
+    environment:
+      name: testpypi
+      url: https://pypi.org/p/<package-name>
+    permissions:
+      id-token: write  # IMPORTANT: mandatory for trusted publishing
+    steps:
+    - name: Download all the dists
+      uses: actions/download-artifact@v6
+      with:
+        name: python-package-distributions
+        path: dist/
+    - name: Publish distribution to TestPyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        repository-url: https://test.pypi.org/legacy/
