@@ -1,6 +1,6 @@
 name: Publish to testpypi
 
-# trigger on workflow_dispatch (manual) OR Github publish release
+# trigger on workflow_dispatch (manual)
 on:
   workflow_dispatch:
 
