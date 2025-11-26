@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "py4spice"
-version = "0.0.1"
+dynamic = ["version"]
 description = "Python modules for running Ngspice"
 readme = "README.md"
 authors = [{ name = "Mark Chadwick", email = "mark.chadwick@techsharpen.com" }]
@@ -25,6 +25,10 @@ dev = [
     "pytest>=9.0.1",
     "pyright>=1.1.407",
 ]
+
+[tool.hatch.version]
+source = "tag"
+pattern = "v(?P<version>.+)"
 
 [tool.pyright]
 include = [
