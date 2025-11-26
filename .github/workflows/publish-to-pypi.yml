@@ -1,5 +1,5 @@
 
-name: Publish to testpypi
+name: Publish to pypi
 
 # trigger on workflow_dispatch (manual) OR Github publish release
 on:
