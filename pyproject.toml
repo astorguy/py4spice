@@ -27,8 +27,7 @@ dev = [
 ]
 
 [tool.hatch.version]
-source = "tag"
-pattern = "v(?P<version>.+)"
+source = "vcs"
 
 [tool.pyright]
 include = [
