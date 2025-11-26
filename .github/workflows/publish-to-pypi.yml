@@ -1,4 +1,4 @@
-name: Publish to pypi
+name: Publish to PyPI
 
 # trigger on workflow_dispatch (manual) OR Github publish release
 on:
