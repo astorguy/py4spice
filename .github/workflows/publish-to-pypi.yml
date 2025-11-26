@@ -1,8 +1,8 @@
 name: Publish to PyPI
 
-concurrency:
-  group: publish-${{ github.ref }}
-  cancel-in-progress: true
+#concurrency:
+#  group: publish-${{ github.ref }}
+#  cancel-in-progress: true
 
 # trigger on workflow_dispatch (manual) OR Github publish release
 on:
