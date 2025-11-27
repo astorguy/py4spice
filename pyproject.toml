@@ -30,14 +30,10 @@ dev = [
 source = "vcs"
 
 [tool.hatch.build.targets.sdist]
-include = [
-    "/src",
-]
+include = ["/src"]
 
 [tool.hatch.build.targets.wheel]
-packages = [
-    "src/py4spice",
-]
+packages = ["src/py4spice"]
 
 [tool.pyright]
 include = [
