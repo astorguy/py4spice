@@ -35,6 +35,7 @@
           "circuits",
           "src/py4spice"
         ],
+        "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
         "python.formatting.provider": "ruff",
         "python.linting.provider": "ruff",
         "workbench.colorTheme": "Cobalt2",
