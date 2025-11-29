@@ -3,7 +3,8 @@
   "build": {
     "dockerfile": "Dockerfile",
     "args": {
-      "PROJECT_ROOT": "/workspaces/py4spice" // <-- Overrides the default
+//      "PROJECT_ROOT": "/workspaces/py4spice" 
+      "PROJECT_ROOT": "/workspaces/${localWorkspaceFolderBasename}" // <-- Overrides the default
     }
   },
   
@@ -11,7 +12,8 @@
   "remoteEnv": {
     "UV_LINK_MODE": "copy"
   },
-  "postCreateCommand": "/workspaces/$(basename $PWD)/.devcontainer/postCreateCommand.sh",
+  "postCreateCommand": "${containerWorkspaceFolder}/.devcontainer/postCreateCommand.sh",
+  // "postCreateCommand": "/workspaces/$(basename $PWD)/.devcontainer/postCreateCommand.sh",
   "remoteUser": "vscode",
   "customizations": {
     "codespaces": {
