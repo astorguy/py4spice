@@ -1,11 +1,9 @@
-"""Create control file"""
-
 import time
 from pathlib import Path
 
 
 class Control:
-    """Generate Control file"""
+    """Generate control file to for a simulation"""
 
     def __init__(self) -> None:
         self.beginning: list[str] = [".control"]
