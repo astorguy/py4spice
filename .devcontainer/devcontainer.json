@@ -3,7 +3,6 @@
   "build": {
     "dockerfile": "Dockerfile",
     "args": {
-//      "PROJECT_ROOT": "/workspaces/py4spice" 
       "PROJECT_ROOT": "/workspaces/${localWorkspaceFolderBasename}" // <-- Overrides the default
     }
   },
@@ -12,13 +11,16 @@
   "remoteEnv": {
     "UV_LINK_MODE": "copy"
   },
+
   "postCreateCommand": "${containerWorkspaceFolder}/.devcontainer/postCreateCommand.sh",
-  // "postCreateCommand": "/workspaces/$(basename $PWD)/.devcontainer/postCreateCommand.sh",
+
   "remoteUser": "vscode",
+
   "customizations": {
     "codespaces": {
-      "openFiles": []
+      "openFiles": [] // <-- Files to open automatically on Codespaces startup
     },
+
     "vscode": {
       "extensions": [
         "charliermarsh.ruff",
@@ -32,6 +34,7 @@
         "xuanli.spice",
         "streetsidesoftware.code-spell-checker"
       ],
+
       "settings": {
         "terminal.integrated.defaultProfile.linux": "bash",
         "editor.formatOnSave": true,
