@@ -1,12 +1,11 @@
-"""Vector set of signals for which to gather data, plot, ..."""
-
 from pathlib import Path
-from .vectors import Vectors
+
 from .globals_types import AnaType
+from .vectors import Vectors
 
 
 class Analyses:
-    """Vector set of signals for which to gather data, plot, ..."""
+    """Prepares analysis command that will go into control file and be executed during simulation"""
 
     def __init__(
         self,

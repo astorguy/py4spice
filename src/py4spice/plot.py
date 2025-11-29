@@ -1,4 +1,4 @@
-"""Line plot multiple pd.DataFrame results from simulation"""
+"""Matplotlib plot of numpy results from simulation"""
 
 from pathlib import Path
 from typing import Literal, Optional
