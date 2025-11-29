@@ -14,9 +14,8 @@ ARG UID=1000
 ARG GID=1000
 ENV APP_HOME=/workspaces/py4spice
 
-# Generic default value, shouls be overwritten in devcontainer.json
+# Generic default value, shoulds be overwritten in devcontainer.json
 ARG PROJECT_ROOT=/workspaces/project-name
-# 2. ENV for a conventional runtime variable that points to the project root
 ENV APP_HOME=${PROJECT_ROOT}
 
 RUN addgroup --gid $GID $GROUPNAME \
