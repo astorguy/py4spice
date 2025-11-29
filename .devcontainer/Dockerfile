@@ -14,6 +14,10 @@ ARG UID=1000
 ARG GID=1000
 ENV APP_HOME=/workspaces/py4spice
 
+# Generic default value, shoulds be overwritten in devcontainer.json
+ARG PROJECT_ROOT=/workspaces/project-name
+ENV APP_HOME=${PROJECT_ROOT}
+
 RUN addgroup --gid $GID $GROUPNAME \
     && adduser --uid $UID --gid $GID --disabled-password $USERNAME \
     && mkdir -p $APP_HOME \
