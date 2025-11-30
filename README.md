@@ -19,8 +19,7 @@ ngspice -v
 ### Install py4spice
 py4spice is installed in the customary way for a PyPI package.
 ```bash
-sudo apt update
-sudo apt install py4spice
+pip install py4spice
 ```
 ### Package Modules
 
