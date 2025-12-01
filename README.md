@@ -4,12 +4,17 @@ Lightweight Python package interface to Ngspice
 ## Motivation
 [Ngspice](https://ngspice.sourceforge.io/) is an open source electrical circuit simulator. It typically executes in batch mode using an archaic script interface. The ***Python-for-Spice*** package facilitates Ngspice execution using Python scripts. You can launch multiple analyses and convert the results to [NumPy](https://numpy.org/) arrays, enabling downstream computation or plotting with [Matplotlib](https://matplotlib.org/).
 
+***Python-for-Spice*** is not an API for Ngspice. Nor does it use the API provided by Ngspice. Instead, it offers a set of helper classes to make it easier to run Ngspice in batch process fashion.
+
 A modest knowledge of Ngspice and Python is required.
+
+## Learning Ngspice and Python-for-Spices
+The [learn_ngspice](https://github.com/astorguy/learn_ngspice) respository offers an efficient way to learn Ngspice and Python-for-Spice with a set of example circuits.
 
 ## Installation
 
 ### Install Ngspice
-Ngspice must be [installed](https://ngspice.sourceforge.io/download.html). For most Linux distributions, ngspice can be installed with a package manager. As an example, for Debian use the following commands:
+Ngspice must be [installed](https://ngspice.sourceforge.io/download.html). For most Linux distributions, Ngspice can be installed with a package manager. As an example, for Debian-based Linux use these commands:
 
 ```bash
 sudo apt update
@@ -19,8 +24,7 @@ ngspice -v
 ### Install py4spice
 py4spice is installed in the customary way for a PyPI package.
 ```bash
-sudo apt update
-sudo apt install py4spice
+pip install py4spice
 ```
 ### Package Modules
 
