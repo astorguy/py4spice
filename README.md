@@ -19,7 +19,6 @@ Ngspice must be [installed](https://ngspice.sourceforge.io/download.html). For m
 ```bash
 sudo apt update
 sudo apt install ngspice
-ngspice -v
 ```
 ### Install py4spice
 py4spice is installed in the customary way for a PyPI package.
