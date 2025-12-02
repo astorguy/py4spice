@@ -12,7 +12,6 @@ ARG USERNAME=vscode
 ARG GROUPNAME=vscode
 ARG UID=1000
 ARG GID=1000
-ENV APP_HOME=/workspaces/py4spice
 
 # Generic default value, shoulds be overwritten in devcontainer.json
 ARG PROJECT_ROOT=/workspaces/project-name
